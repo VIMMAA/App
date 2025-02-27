@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/dark</item>
+        <item name="postSplashScreenTheme">@style/MainTheme</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+    </style>
 
-    <style name="Theme.App" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="MainTheme" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimaryDark">@color/transparent</item>
+        <item name="colorAccent">@color/transparent</item>
+        <item name="android:colorBackground">@color/dark</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <style name="CustomButton" parent="Theme.AppCompat">
+        <item name="colorPrimary">@null</item>
+        <item name="colorAccent">@null</item>
+    </style>
 </resources>
