@@ -3,4 +3,13 @@
     <string name="register">Зарегистрироваться</string>
     <string name="sign_in">Войти в аккаунт</string>
     <string name="welcome">Добро пожаловать в ПрогулаНет.Ру</string>
+    <string name="signin">Вход в аккаунт</string>
+    <string name="sign">Войти</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="registration">Регистрация</string>
+    <string name="dateOfBirth">Дата рождения</string>
+    <string name="surname">Отчество</string>
+    <string name="secondName">Фамилия</string>
+    <string name="firstName">Имя</string>
 </resources>

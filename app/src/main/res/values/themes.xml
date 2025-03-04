@@ -18,5 +18,7 @@
     <style name="CustomButton" parent="Theme.AppCompat">
         <item name="colorPrimary">@null</item>
         <item name="colorAccent">@null</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 </resources>

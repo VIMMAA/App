@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.hits.app.databinding.ActivitySignBinding
+import com.hits.app.databinding.ActivitySignupBinding
 
-class SignActivity : AppCompatActivity() {
+class SignupActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySignBinding
+    lateinit var binding : ActivitySignupBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +18,7 @@ class SignActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
 
-        binding = ActivitySignBinding.inflate(layoutInflater)
+        binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.back.setOnClickListener() {

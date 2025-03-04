@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.hits.app.databinding.ActivityMainBinding
+import com.hits.app.databinding.ActivityWelcomeBinding
 
 class MainActivity : AppCompatActivity() {
 
-
+    private lateinit var binding : ActivityMainBinding;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         )
 
 
-        val intent = Intent(this, SignActivity::class.java)
+        val intent = Intent(this, WelcomeActivity::class.java)
         startActivity(intent)
     }
 }
