@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
   <ImageButton
-      android:id="@+id/back3"
+      android:id="@+id/back"
       android:layout_width="40dp"
       android:layout_height="40dp"
       android:background="@drawable/grey_button"
@@ -37,9 +37,9 @@
       android:text="@string/profile"
       android:textColor="@color/white"
       android:textSize="22sp"
-      app:layout_constraintBottom_toBottomOf="@+id/back3"
-      app:layout_constraintTop_toTopOf="@+id/back3"
-      app:layout_constraintStart_toEndOf="@+id/back3"
+      app:layout_constraintBottom_toBottomOf="@+id/back"
+      app:layout_constraintTop_toTopOf="@+id/back"
+      app:layout_constraintStart_toEndOf="@+id/back"
       android:layout_marginStart="16dp" />
 
   <androidx.cardview.widget.CardView
@@ -47,8 +47,8 @@
       android:layout_height="96dp"
       app:cardBackgroundColor="@color/transparent"
       app:cardCornerRadius="48dp"
-      app:layout_constraintStart_toStartOf="@+id/back3"
-      app:layout_constraintTop_toBottomOf="@+id/back3"
+      app:layout_constraintStart_toStartOf="@+id/back"
+      app:layout_constraintTop_toBottomOf="@+id/back"
       android:layout_marginTop="48dp"
       android:id="@+id/cardView">
 

@@ -13,5 +13,22 @@
     <string name="secondName">Фамилия</string>
     <string name="firstName">Имя</string>
     <string name="profile">Профиль</string>
+    <string name="application">Заявка</string>
+    <string name="application_info">Информация о заявке</string>
+    <string name="submission_date">Дата подачи</string>
     <string name="name_example">Иванов Иван</string>
+    <string name="submission_date_example">23.02.2025</string>
+    <string name="subject_example_1">ОКР</string>
+    <string name="subject_example_2">Физкультура</string>
+    <string name="subject_example_3">Английский язык</string>
+    <string name="subject_example_4">Программирование</string>
+    <string name="prefix_waiting">На проверке</string>
+    <string name="prefix_approved">Одобрена</string>
+    <string name="prefix_rejected">Отклонена</string>
+    <string name="calendar_1">ПН</string>
+    <string name="calendar_2">ВТ</string>
+    <string name="calendar_3">СР</string>
+    <string name="calendar_4">ЧТ</string>
+    <string name="calendar_5">ПТ</string>
+    <string name="calendar_6">СБ</string>
 </resources>
