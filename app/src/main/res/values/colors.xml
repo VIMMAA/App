@@ -8,8 +8,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_grey">#333333</color>
+    <color name="dark_grey">#2A2A2A</color>
     <color name="grey_faded">#999999</color>
     <color name="dark">#1E1E1E</color>
     <color name="transparent">#00EEEEEE</color>
     <color name="blue">#007AFF</color>
+    <color name="prefix_waiting">#3C3C3C</color>
+    <color name="prefix_approved">#1E873C</color>
+    <color name="prefix_rejected">#B3261E</color>
 </resources>
