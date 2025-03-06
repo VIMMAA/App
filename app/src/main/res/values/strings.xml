@@ -14,4 +14,7 @@
     <string name="firstName">Имя</string>
     <string name="profile">Профиль</string>
     <string name="name_example">Иванов Иван</string>
+    <string name="createReq">Создать заявку</string>
+    <string name="listReq">Список заявок</string>
+    <string name="advertisement">Здесь могла быть ваша реклама</string>
 </resources>
