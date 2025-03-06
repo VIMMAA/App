@@ -12,4 +12,6 @@
     <string name="surname">Отчество</string>
     <string name="secondName">Фамилия</string>
     <string name="firstName">Имя</string>
+    <string name="profile">Профиль</string>
+    <string name="name_example">Иванов Иван</string>
 </resources>
