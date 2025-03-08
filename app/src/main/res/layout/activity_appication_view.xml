@@ -39,9 +39,7 @@
               android:layout_width="match_parent"
               android:layout_height="60dp"
               android:theme="@style/CustomButton"
-              android:background="@drawable/grey_button"
-              android:hint="@string/edit"
-              android:textColorHint="@color/grey_faded"
+              android:background="@drawable/blue_button"
               android:textColor="@color/white"
               android:fontFamily="@font/manrope_bold"
               android:textAllCaps="false"
@@ -49,7 +47,8 @@
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toTopOf="parent"
-              android:layout_marginTop="20dp" />
+              android:layout_marginTop="20dp"
+              android:text="@string/edit" />
         </LinearLayout>
 
         <ImageButton
