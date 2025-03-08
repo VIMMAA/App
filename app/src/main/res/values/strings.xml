@@ -5,6 +5,11 @@
     <string name="welcome">Добро пожаловать в ПрогулаНет.Ру</string>
     <string name="signin">Вход в аккаунт</string>
     <string name="sign">Войти</string>
+    <string name="add">+ Добавить</string>
+    <string name="create">Создать</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
     <string name="email">Email</string>
     <string name="password">Пароль</string>
     <string name="registration">Регистрация</string>
@@ -14,7 +19,10 @@
     <string name="firstName">Имя</string>
     <string name="profile">Профиль</string>
     <string name="application">Заявка</string>
+    <string name="application_editor">Редактирование заявки</string>
     <string name="application_info">Информация о заявке</string>
+    <string name="attached_files">Прикреплённые файлы</string>
+    <string name="additional_comments">Дополнительные комментарии</string>
     <string name="submission_date">Дата подачи</string>
     <string name="name_example">Иванов Иван</string>
     <string name="submission_date_example">23.02.2025</string>
@@ -22,6 +30,15 @@
     <string name="subject_example_2">Физкультура</string>
     <string name="subject_example_3">Английский язык</string>
     <string name="subject_example_4">Программирование</string>
+    <string name="order_example_1">1-ая пара</string>
+    <string name="order_example_2">2-ая пара</string>
+    <string name="order_example_3">3-ая пара</string>
+    <string name="order_example_4">4-ая пара</string>
+    <string name="bound_example">12:10 - 14:00 • 1 пара</string>
+    <string name="attached_file_example_1">Turnir_gorodskoy_po_shahmatam_2025</string>
+    <string name="attached_file_example_2">Spravka_o_bolesni№553</string>
+    <string name="additional_comments_example">Вы неверно указали срок действия справки. Переподайте заявку.\nЭто было не просто смело...</string>
+    <string name="week_example">24 февраля - 02 марта</string>
     <string name="prefix_waiting">На проверке</string>
     <string name="prefix_approved">Одобрена</string>
     <string name="prefix_rejected">Отклонена</string>
@@ -31,4 +48,7 @@
     <string name="calendar_4">ЧТ</string>
     <string name="calendar_5">ПТ</string>
     <string name="calendar_6">СБ</string>
+    <string name="createReq">Создать заявку</string>
+    <string name="listReq">Список заявок</string>
+    <string name="advertisement">Здесь могла быть ваша реклама</string>
 </resources>

@@ -38,6 +38,12 @@
             android:theme="@style/Theme.AppCompat.DayNight"
             android:fitsSystemWindows="true">
         </activity>
+        <activity
+            android:name=".FeedActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight"
+            android:fitsSystemWindows="true">
+        </activity>
     </application>
 
 </manifest>
