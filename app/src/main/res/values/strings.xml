@@ -19,6 +19,7 @@
     <string name="firstName">Имя</string>
     <string name="profile">Профиль</string>
     <string name="application">Заявка</string>
+    <string name="application_creator">Создание заявки</string>
     <string name="application_editor">Редактирование заявки</string>
     <string name="application_info">Информация о заявке</string>
     <string name="attached_files">Прикреплённые файлы</string>
