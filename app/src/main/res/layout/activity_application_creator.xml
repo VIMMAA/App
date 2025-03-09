@@ -35,27 +35,6 @@
             app:layout_constraintTop_toBottomOf="@+id/additional_comments">
 
           <Button
-              android:id="@+id/delete"
-              android:layout_width="0dp"
-              android:layout_height="60dp"
-              android:theme="@style/CustomButton"
-              android:background="@drawable/red_button"
-              android:textColor="@color/white"
-              android:fontFamily="@font/manrope_bold"
-              android:textAllCaps="false"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              android:layout_marginTop="20dp"
-              android:layout_weight="1"
-              android:text="@string/delete" />
-
-          <Space
-              android:layout_width="8dp"
-              android:layout_height="wrap_content" />
-
-          <Button
               android:id="@+id/save"
               android:layout_width="0dp"
               android:layout_height="60dp"
@@ -84,11 +63,11 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/application_editor"
+            android:id="@+id/application_creator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/manrope_bold"
-            android:text="@string/application_editor"
+            android:text="@string/application_creator"
             android:textColor="@color/white"
             android:textSize="22sp"
             app:layout_constraintTop_toTopOf="@+id/back"
