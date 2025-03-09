@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -24,7 +23,7 @@
     <ImageView
         android:layout_width="229dp"
         android:layout_height="405dp"
-        android:src="@drawable/group_4"
+        android:src="@drawable/second"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

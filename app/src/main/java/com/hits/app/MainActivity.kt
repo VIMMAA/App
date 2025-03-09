@@ -1,44 +1,28 @@
 package com.hits.app
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.ViewTreeObserver
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.hits.app.databinding.ActivityMainBinding
-import com.hits.app.databinding.ActivityWelcomeBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMainBinding;
+    private var SPLASH_TIMER = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
-        super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        val startTime = System.currentTimeMillis()
-
-        val content: View = findViewById(android.R.id.content)
-        content.viewTreeObserver.addOnPreDrawListener(
-            object : ViewTreeObserver.OnPreDrawListener {
-                override fun onPreDraw(): Boolean {
-                    // Check whether the initial data is ready.
-                    return if (System.currentTimeMillis() - startTime > 1600) {
-                        // The content is ready. Start drawing.
-                        content.viewTreeObserver.removeOnPreDrawListener(this)
-                        true
-                    } else {
-                        // The content isn't ready. Suspend.
-                        false
-                    }
-                }
-            }
-        )
+        Handler().postDelayed(Runnable {
+            val intent = Intent(
+                this@MainActivity,
+                WelcomeActivity::class.java
+            )
+            startActivity(intent)
+            finish()
+        }, SPLASH_TIMER.toLong())
 
 
-        val intent = Intent(this, WelcomeActivity::class.java)
-        startActivity(intent)
+        supportActionBar?.hide()
     }
 }
