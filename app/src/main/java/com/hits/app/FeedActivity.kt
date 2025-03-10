@@ -14,8 +14,13 @@ class FeedActivity : AppCompatActivity() {
         binding = ActivityFeedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.profile.setOnClickListener() {
+        binding.profile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.newReq.setOnClickListener {
+            val intent = Intent(this, ApplicationCreatorActivity::class.java)
             startActivity(intent)
         }
 
