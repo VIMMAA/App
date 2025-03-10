@@ -47,6 +47,21 @@
             android:exported="false"
             android:fitsSystemWindows="true">
         </activity>
+        <activity
+            android:name=".ApplicationViewerActivity"
+            android:exported="false"
+            android:fitsSystemWindows="true">
+        </activity>
+        <activity
+            android:name=".ApplicationEditorActivity"
+            android:exported="false"
+            android:fitsSystemWindows="true">
+        </activity>
+        <activity
+            android:name=".ApplicationCreatorActivity"
+            android:exported="false"
+            android:fitsSystemWindows="true">
+        </activity>
     </application>
 
 </manifest>
