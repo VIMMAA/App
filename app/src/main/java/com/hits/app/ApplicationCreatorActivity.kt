@@ -1,26 +1,95 @@
 package com.hits.app
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
+import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
+import androidx.core.widget.doAfterTextChanged
 import com.hits.app.databinding.ActivityApplicationCreatorBinding
 import com.hits.app.utils.WeekCalculator
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class ApplicationCreatorActivity : AppCompatActivity() {
-    private val formatter = SimpleDateFormat("HH:mm", Locale("ru"))
-
     private lateinit var weekCalculator: WeekCalculator
 
     private lateinit var binding: ActivityApplicationCreatorBinding
 
     private var schedule: ArrayList<MutableMap<String, Any>> = arrayListOf()
+    private var attachedFiles: ArrayList<MutableMap<String, Any?>> = arrayListOf()
+    private var additionalComments = ""
     private var currentDayOfWeek = 1
+
+    private val formatter = SimpleDateFormat("HH:mm", Locale("ru"))
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let { uri: Uri ->
+                val imagePath = getRealPathFromURI(uri)
+                val imageName = getImageNameFromURI(uri)
+
+                imagePath?.let { path ->
+                    val imageBase64 = convertImageToBase64(path)
+
+                    attachedFiles.add(
+                        mutableMapOf(
+                            "name" to imageName,
+                            "data" to imageBase64
+                        )
+                    )
+
+                    // Файл
+                    val fileView = CardView(binding.attachedFiles.context)
+
+                    fileView.layoutParams = binding.attachedFile.layoutParams
+                    fileView.setCardBackgroundColor(getColor(R.color.light_grey))
+                    fileView.radius = 8f
+
+                    // Название файла
+                    val fileNameView = TextView(fileView.context)
+
+                    fileNameView.layoutParams = binding.attachedFileName.layoutParams
+                    fileNameView.setBackgroundResource(R.color.transparent)
+                    fileNameView.text = imageName
+                    fileNameView.setTextColor(getColor(R.color.white))
+
+                    // Кнопка удаления файла
+                    val removeFileButton =
+                        ImageButton(ContextThemeWrapper(fileView.context, R.style.CustomButton))
+
+                    removeFileButton.layoutParams = binding.removeAttachedFile.layoutParams
+                    removeFileButton.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            fileView.context,
+                            R.drawable.cross_icon
+                        )
+                    )
+                    removeFileButton.setBackgroundResource(R.drawable.grey_button)
+
+                    removeFileButton.setOnClickListener {
+                        attachedFiles.removeIf { it["data"] == imageBase64 }
+                        binding.attachedFiles.removeView(fileView)
+                    }
+
+                    fileView.addView(fileNameView)
+                    fileView.addView(removeFileButton)
+
+                    binding.attachedFiles.addView(fileView)
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +107,15 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
         binding.left.setOnClickListener {
             weekCalculator.previousWeek()
-            setWeek()
+            updateWeek()
             updateSchedule()
+            selectDay(currentDayOfWeek)
         }
         binding.right.setOnClickListener {
             weekCalculator.nextWeek()
-            setWeek()
+            updateWeek()
             updateSchedule()
+            selectDay(currentDayOfWeek)
         }
 
         var previosButton: View = binding.calendar1
@@ -67,7 +138,21 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             }
         }
 
-        setWeek()
+        binding.add.setOnClickListener {
+            pickImageLauncher.launch("image/*")
+        }
+
+        binding.attachedFiles.removeAllViews()
+
+        binding.additionalCommentsText.doAfterTextChanged {
+            additionalComments = it.toString()
+        }
+
+        binding.save.setOnClickListener {
+            createApplication()
+        }
+
+        updateWeek()
 
         supportActionBar?.hide()
     }
@@ -86,6 +171,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
             schedule.add(
                 mutableMapOf(
+                    "id" to "any",
                     "lessonName" to "Английский язык",
                     "dateFrom" to dateFromExample,
                     "dateTo" to dateToExample,
@@ -95,8 +181,18 @@ class ApplicationCreatorActivity : AppCompatActivity() {
         }
     }
 
+    // Создать заявку
+    // TODO: Выполнить запрос на бэкенд для создания
+    private fun createApplication() {
+        val lessons = schedule.filter { it["selected"] as Boolean }
+            .map { mutableMapOf("id" to it["id"]) }
+
+        attachedFiles
+        additionalComments
+    }
+
     // Установить текущую неделю
-    private fun setWeek() {
+    private fun updateWeek() {
         val startOfWeek = weekCalculator.getStartOfWeek()
         val endOfWeek = weekCalculator.getEndOfWeek()
 
@@ -120,18 +216,17 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                 val dateFrom = subject["dateFrom"] as Date
 
                 if (dateFrom < startOfDayOfWeek || endOfDayOfWeek <= dateFrom) {
-                    return
+                    subject["selected"] = false
+                    updateSaveButton()
+
+                    return@forEachIndexed
                 }
 
                 // Предмет
                 val subjectView = CardView(binding.subjects.context)
 
                 subjectView.layoutParams = binding.subject.layoutParams
-                subjectView.setCardBackgroundColor(
-                    resources.getColor(
-                        if (subject["selected"] as Boolean) R.color.blue else R.color.dark_grey
-                    )
-                )
+                subjectView.setCardBackgroundColor(getColor(R.color.dark_grey))
                 subjectView.radius = 8f
 
                 // Название предмета
@@ -139,25 +234,25 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
                 subjectNameView.layoutParams = binding.subjectName.layoutParams
                 subjectNameView.setBackgroundResource(R.color.transparent)
-                subjectNameView.gravity = Gravity.CENTER_VERTICAL
                 subjectNameView.text = subject["lessonName"] as String
-                subjectNameView.setTextColor(resources.getColor(R.color.white))
+                subjectNameView.setTextColor(getColor(R.color.white))
 
                 // Порядковый номер предмета
                 val subjectOrderView = TextView(subjectView.context)
 
                 subjectOrderView.layoutParams = binding.subjectOrder.layoutParams
                 subjectOrderView.setBackgroundResource(R.color.transparent)
-                subjectOrderView.gravity = Gravity.CENTER_VERTICAL or Gravity.END
                 subjectOrderView.text = "${index + 1}-ая пара"
-                subjectOrderView.setTextColor(resources.getColor(R.color.teal_200))
+                subjectOrderView.setTextColor(getColor(R.color.teal_200))
 
                 subjectView.setOnClickListener {
-                    subject["selected"] = !(subject["selected"] as Boolean)
+                    val selected = subject["selected"] as Boolean
+
+                    subject["selected"] = !selected
+                    updateSaveButton()
+
                     subjectView.setCardBackgroundColor(
-                        resources.getColor(
-                            if (subject["selected"] as Boolean) R.color.blue else R.color.dark_grey
-                        )
+                        getColor(if (selected) R.color.dark_grey else R.color.blue)
                     )
                 }
 
@@ -179,7 +274,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                         boundView.setBackgroundResource(R.color.transparent)
                         boundView.gravity = Gravity.CENTER
                         boundView.text = "$t1 - $t2 • перерыв"
-                        boundView.setTextColor(resources.getColor(R.color.teal_200))
+                        boundView.setTextColor(getColor(R.color.teal_200))
 
                         binding.subjects.addView(boundView)
                     }
@@ -192,5 +287,80 @@ class ApplicationCreatorActivity : AppCompatActivity() {
         }
 
         // Открыть или закрыть календарь
+        // TODO: Доделать Маше
+    }
+
+    // Обновить кнопку для сохранения
+    private fun updateSaveButton() {
+        val countOfSelectedLessons = schedule.count { it["selected"] as Boolean }
+
+        if (countOfSelectedLessons > 0) {
+            if (binding.save.isEnabled) return
+
+            binding.save.setBackgroundResource(R.drawable.blue_button)
+            binding.save.isEnabled = true
+            binding.save.setTextColor(getColor(R.color.white))
+
+            return
+        }
+
+        if (!binding.save.isEnabled) return
+
+        binding.save.setBackgroundResource(R.drawable.grey_button)
+        binding.save.isEnabled = false
+        binding.save.setTextColor(getColor(R.color.teal_700))
+    }
+
+    // Конвертация изображения в Base64
+    private fun convertImageToBase64(imagePath: String): String {
+        val bitmap = BitmapFactory.decodeFile(imagePath)
+        val byteArrayOutputStream = ByteArrayOutputStream()
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+
+        return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
+    }
+
+    // Получение реального пути из URI
+    private fun getRealPathFromURI(uri: Uri): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = contentResolver.query(
+            uri,
+            projection,
+            null,
+            null,
+            null
+        )
+
+        cursor?.use {
+            if (it.moveToFirst()) {
+                return it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
+            }
+        }
+
+        return null
+    }
+
+    // Получение названия изображения из URI
+    private fun getImageNameFromURI(uri: Uri): String? {
+        val cursor = contentResolver.query(
+            uri,
+            null,
+            null,
+            null,
+            null
+        )
+
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val displayNameIndex = it.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)
+
+                if (displayNameIndex != -1) {
+                    return it.getString(displayNameIndex)
+                }
+            }
+        }
+
+        return null
     }
 }
