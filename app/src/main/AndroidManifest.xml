@@ -63,5 +63,4 @@
             android:fitsSystemWindows="true">
         </activity>
     </application>
-
 </manifest>

@@ -52,5 +52,6 @@
     <string name="createReq">Создать заявку</string>
     <string name="listReq">Список заявок</string>
     <string name="placeholder">Введите что-нибудь</string>
+    <string name="nothing">Ничего нет</string>
     <string name="advertisement">Здесь могла быть ваша реклама</string>
 </resources>
