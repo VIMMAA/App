@@ -74,18 +74,20 @@
             app:layout_constraintTop_toTopOf="@+id/back"
             app:layout_constraintBottom_toBottomOf="@+id/back"
             app:layout_constraintStart_toEndOf="@+id/back"
-            android:layout_marginLeft="16dp" />
+            android:layout_marginLeft="16dp"
+            android:background="@color/transparent" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/light_grey"
             app:cardCornerRadius="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/additional_comments_title"
             android:id="@+id/additional_comments"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:background="@color/transparent">
 
           <EditText
               android:layout_width="match_parent"
@@ -110,7 +112,7 @@
             app:cardBackgroundColor="@color/light_grey"
             app:cardCornerRadius="8dp"
             app:layout_constraintTop_toBottomOf="@+id/back"
-            android:id="@+id/cardView2"
+            android:id="@+id/week_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp"
@@ -167,24 +169,26 @@
             android:text="@string/attached_files"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView8"
+            android:id="@+id/attached_files_title"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView4"
-            android:layout_marginTop="16dp" />
+            app:layout_constraintTop_toBottomOf="@+id/calendar_container"
+            android:layout_marginTop="16dp"
+            android:background="@color/transparent" />
 
         <TextView
             android:text="@string/additional_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView9"
+            android:id="@+id/additional_comments_title"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/attached_files"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:background="@color/transparent" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -193,8 +197,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:cardCornerRadius="8dp"
-            android:id="@+id/cardView4"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2"
+            android:id="@+id/calendar_container"
+            app:layout_constraintTop_toBottomOf="@+id/week_card"
             android:layout_marginTop="16dp"
             android:background="@color/transparent">
 
@@ -237,7 +241,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_2"
-                android:textColor="@color/white"
+                android:textColor="@color/teal_200"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -258,7 +262,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_3"
-                android:textColor="@color/white"
+                android:textColor="@color/teal_200"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -280,7 +284,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_4"
-                android:textColor="@color/white"
+                android:textColor="@color/teal_200"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -302,7 +306,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_5"
-                android:textColor="@color/white"
+                android:textColor="@color/teal_200"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -324,7 +328,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_6"
-                android:textColor="@color/white"
+                android:textColor="@color/teal_200"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -416,10 +420,11 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/attached_files_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/attached_files">
+            android:id="@+id/attached_files"
+            android:background="@color/transparent">
 
           <androidx.cardview.widget.CardView
               android:layout_width="match_parent"
@@ -462,8 +467,8 @@
             android:paddingRight="0dp"
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
-            app:layout_constraintTop_toTopOf="@+id/textView8"
-            app:layout_constraintBottom_toBottomOf="@+id/textView8"
+            app:layout_constraintTop_toTopOf="@+id/attached_files_title"
+            app:layout_constraintBottom_toBottomOf="@+id/attached_files_title"
             app:layout_constraintEnd_toEndOf="parent"
             android:background="@color/transparent"
             android:textColor="@color/white" />

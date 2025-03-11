@@ -9,6 +9,7 @@ import android.util.Base64
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -130,8 +131,17 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             binding.calendar7
         ).forEachIndexed { index, button ->
             button.setOnClickListener {
-                previosButton.setBackgroundResource(R.color.transparent)
+                if (previosButton is ImageButton) {
+                    previosButton.setBackgroundResource(R.drawable.grey_button)
+                } else {
+                    (previosButton as Button).apply {
+                        setBackgroundResource(R.color.transparent)
+                        setTextColor(getColor(R.color.teal_200))
+                    }
+                }
+
                 button.setBackgroundResource(R.drawable.blue_button)
+                if (button is Button) button.setTextColor(getColor(R.color.white))
 
                 previosButton = button
                 selectDay(index + 1)
