@@ -15,11 +15,15 @@ class FeedActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.profile.setOnClickListener {
+            finish()
+
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
 
         binding.newReq.setOnClickListener {
+            finish()
+
             val intent = Intent(this, ApplicationCreatorActivity::class.java)
             startActivity(intent)
         }

@@ -14,13 +14,19 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.back.setOnClickListener() {
+        binding.back.setOnClickListener {
             finish()
+
+            val intent = Intent(this, FeedActivity::class.java)
+            startActivity(intent)
         }
 
-        binding.logout.setOnClickListener() {
+        binding.logout.setOnClickListener {
+            finish()
+
             val intent = Intent(this, WelcomeActivity::class.java)
             startActivity(intent)
+
             // +back махинации
         }
 

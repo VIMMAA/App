@@ -67,6 +67,16 @@ class WeekCalculator {
         calendar.add(Calendar.WEEK_OF_YEAR, -1)
     }
 
+    // Установить конкретную дату
+    fun setDate(date: Date) {
+        calendar.timeInMillis = date.time
+
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+    }
+
     init {
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
