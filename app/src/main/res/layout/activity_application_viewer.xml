@@ -223,7 +223,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_1"
-                android:textColor="@color/teal_200"
+                android:textColor="@color/white"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -231,10 +231,9 @@
                 android:gravity="center"
                 android:minHeight="0dp"
                 android:minWidth="0dp"
-                android:background="@color/transparent"
+                android:background="@drawable/blue_button"
                 android:theme="@style/CustomButton"
-                android:textSize="12sp"
-                android:enabled="false" />
+                android:textSize="12sp" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -256,8 +255,7 @@
                 android:minWidth="0dp"
                 android:textSize="12sp"
                 android:background="@color/transparent"
-                android:theme="@style/CustomButton"
-                android:enabled="false" />
+                android:theme="@style/CustomButton" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -279,8 +277,7 @@
                 android:textSize="12sp"
                 android:text="@string/calendar_3"
                 android:theme="@style/CustomButton"
-                android:background="@color/transparent"
-                android:enabled="false" />
+                android:background="@color/transparent" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -302,8 +299,7 @@
                 android:textSize="12sp"
                 android:text="@string/calendar_4"
                 android:background="@color/transparent"
-                android:theme="@style/CustomButton"
-                android:enabled="false" />
+                android:theme="@style/CustomButton" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -325,8 +321,7 @@
                 android:textSize="12sp"
                 android:text="@string/calendar_5"
                 android:background="@color/transparent"
-                android:theme="@style/CustomButton"
-                android:enabled="false" />
+                android:theme="@style/CustomButton" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -348,8 +343,7 @@
                 android:textSize="12sp"
                 android:text="@string/calendar_6"
                 android:theme="@style/CustomButton"
-                android:background="@color/transparent"
-                android:enabled="false" />
+                android:background="@color/transparent" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -364,8 +358,7 @@
                 android:src="@drawable/calendar_icon"
                 android:theme="@style/CustomButton"
                 tools:layout_editor_absoluteY="199dp"
-                tools:layout_editor_absoluteX="-20dp"
-                android:clickable="false" />
+                tools:layout_editor_absoluteX="-20dp" />
 
             <Space
                 android:layout_width="wrap_content"

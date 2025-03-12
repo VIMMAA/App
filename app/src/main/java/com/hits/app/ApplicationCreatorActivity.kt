@@ -1,5 +1,6 @@
 package com.hits.app
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -25,8 +26,6 @@ import java.util.Date
 import java.util.Locale
 
 class ApplicationCreatorActivity : AppCompatActivity() {
-    private lateinit var weekCalculator: WeekCalculator
-
     private lateinit var binding: ActivityApplicationCreatorBinding
 
     private var schedule: ArrayList<MutableMap<String, Any>> = arrayListOf()
@@ -34,6 +33,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
     private var additionalComments = ""
     private var currentDayOfWeek = 1
 
+    private val weekCalculator = WeekCalculator()
     private val formatter = SimpleDateFormat("HH:mm", Locale("ru"))
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -46,8 +46,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
                     attachedFiles.add(
                         mutableMapOf(
-                            "name" to imageName,
-                            "data" to imageBase64
+                            "name" to imageName, "data" to imageBase64
                         )
                     )
 
@@ -73,8 +72,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                     removeFileButton.layoutParams = binding.removeAttachedFile.layoutParams
                     removeFileButton.setImageDrawable(
                         AppCompatResources.getDrawable(
-                            fileView.context,
-                            R.drawable.cross_icon
+                            fileView.context, R.drawable.cross_icon
                         )
                     )
                     removeFileButton.setBackgroundResource(R.drawable.grey_button)
@@ -94,8 +92,6 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        weekCalculator = WeekCalculator()
 
         updateSchedule()
 
@@ -119,7 +115,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             selectDay(currentDayOfWeek)
         }
 
-        var previosButton: View = binding.calendar1
+        var previousButton: View = binding.calendar1
 
         arrayOf(
             binding.calendar1,
@@ -131,10 +127,10 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             binding.calendar7
         ).forEachIndexed { index, button ->
             button.setOnClickListener {
-                if (previosButton is ImageButton) {
-                    previosButton.setBackgroundResource(R.drawable.grey_button)
+                if (previousButton is ImageButton) {
+                    previousButton.setBackgroundResource(R.drawable.grey_button)
                 } else {
-                    (previosButton as Button).apply {
+                    (previousButton as Button).apply {
                         setBackgroundResource(R.color.transparent)
                         setTextColor(getColor(R.color.teal_200))
                     }
@@ -143,7 +139,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                 button.setBackgroundResource(R.drawable.blue_button)
                 if (button is Button) button.setTextColor(getColor(R.color.white))
 
-                previosButton = button
+                previousButton = button
                 selectDay(index + 1)
             }
         }
@@ -194,11 +190,15 @@ class ApplicationCreatorActivity : AppCompatActivity() {
     // Создать заявку
     // TODO: Выполнить запрос на бэкенд для создания
     private fun createApplication() {
-        val lessons = schedule.filter { it["selected"] as Boolean }
-            .map { mutableMapOf("id" to it["id"]) }
+        val lessons =
+            schedule.filter { it["selected"] as Boolean }.map { mutableMapOf("id" to it["id"]) }
 
         attachedFiles
         additionalComments
+
+        val intent = Intent(this, ApplicationViewerActivity::class.java)
+        intent.putExtra("id", "any")
+        startActivity(intent)
     }
 
     // Установить текущую неделю
@@ -236,7 +236,11 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                 val subjectView = CardView(binding.subjects.context)
 
                 subjectView.layoutParams = binding.subject.layoutParams
-                subjectView.setCardBackgroundColor(getColor(R.color.dark_grey))
+                subjectView.setCardBackgroundColor(
+                    getColor(
+                        if (subject["selected"] as Boolean) R.color.blue else R.color.dark_grey
+                    )
+                )
                 subjectView.radius = 8f
 
                 // Название предмета
@@ -335,11 +339,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
     private fun getRealPathFromURI(uri: Uri): String? {
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = contentResolver.query(
-            uri,
-            projection,
-            null,
-            null,
-            null
+            uri, projection, null, null, null
         )
 
         cursor?.use {
@@ -354,11 +354,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
     // Получение названия изображения из URI
     private fun getImageNameFromURI(uri: Uri): String? {
         val cursor = contentResolver.query(
-            uri,
-            null,
-            null,
-            null,
-            null
+            uri, null, null, null, null
         )
 
         cursor?.use {
