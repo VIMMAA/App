@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 class ApplicationCreatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityApplicationCreatorBinding
@@ -100,6 +101,9 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
         binding.back.setOnClickListener {
             finish()
+
+            val intent = Intent(this, FeedActivity::class.java)
+            startActivity(intent)
         }
 
         binding.left.setOnClickListener {
@@ -177,7 +181,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
             schedule.add(
                 mutableMapOf(
-                    "id" to "any",
+                    "id" to UUID.randomUUID().toString(),
                     "lessonName" to "Английский язык",
                     "dateFrom" to dateFromExample,
                     "dateTo" to dateToExample,
@@ -196,6 +200,8 @@ class ApplicationCreatorActivity : AppCompatActivity() {
         attachedFiles
         additionalComments
 
+        finish()
+
         val intent = Intent(this, ApplicationViewerActivity::class.java)
         intent.putExtra("id", "any")
         startActivity(intent)
@@ -209,6 +215,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
         binding.week.text = "$startOfWeek - $endOfWeek"
 
         selectDay(currentDayOfWeek)
+        updateSaveButton()
     }
 
     // Выбрать день
@@ -226,9 +233,6 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                 val dateFrom = subject["dateFrom"] as Date
 
                 if (dateFrom < startOfDayOfWeek || endOfDayOfWeek <= dateFrom) {
-                    subject["selected"] = false
-                    updateSaveButton()
-
                     return@forEachIndexed
                 }
 

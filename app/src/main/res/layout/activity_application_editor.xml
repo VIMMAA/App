@@ -115,7 +115,7 @@
               android:layout_height="wrap_content"
               android:inputType="text|textMultiLine"
               android:ems="10"
-              android:id="@+id/additional_comments_text2"
+              android:id="@+id/additional_comments_text"
               android:textColor="@color/white"
               android:textSize="14sp"
               android:layout_marginLeft="14dp"
@@ -239,7 +239,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_1"
-                android:textColor="@color/teal_200"
+                android:textColor="@color/white"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -247,7 +247,7 @@
                 android:gravity="center"
                 android:minHeight="0dp"
                 android:minWidth="0dp"
-                android:background="@color/transparent"
+                android:background="@drawable/blue_button"
                 android:theme="@style/CustomButton"
                 android:textSize="12sp" />
 

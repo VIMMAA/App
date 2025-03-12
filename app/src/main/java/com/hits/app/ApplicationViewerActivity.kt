@@ -9,12 +9,12 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.widget.doAfterTextChanged
 import com.hits.app.databinding.ActivityApplicationViewerBinding
 import com.hits.app.utils.WeekCalculator
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 class ApplicationViewerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityApplicationViewerBinding
@@ -40,6 +40,8 @@ class ApplicationViewerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.back.setOnClickListener {
+            finish()
+
             val intent = Intent(this, FeedActivity::class.java)
             startActivity(intent)
         }
@@ -75,17 +77,15 @@ class ApplicationViewerActivity : AppCompatActivity() {
 
         binding.attachedFiles.removeAllViews()
 
-        binding.additionalCommentsText.doAfterTextChanged {
-            additionalComments = it.toString()
-        }
-
         // Если роль студента позволяет это, то он может отредактировать заявку
         val editModeIsAvailable = true
 
         if (editModeIsAvailable) {
             binding.edit.setOnClickListener {
+                finish()
+
                 val intent = Intent(this, ApplicationEditorActivity::class.java)
-                intent.putExtra("id", intent.extras?.getString("id"))
+                intent.putExtra("id", this.intent.extras?.getString("id"))
                 startActivity(intent)
             }
         } else {
@@ -121,8 +121,8 @@ class ApplicationViewerActivity : AppCompatActivity() {
 
         attachedFiles = arrayListOf(
             mutableMapOf(
-                "fileId" to "any",
-                "name" to "turnir"
+                "name" to "turnir",
+                "data" to UUID.randomUUID().toString() // Сюда положить fileId
             )
         )
 
