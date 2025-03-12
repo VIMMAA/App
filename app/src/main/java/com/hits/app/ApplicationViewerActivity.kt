@@ -40,7 +40,8 @@ class ApplicationViewerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.back.setOnClickListener {
-            finish()
+            val intent = Intent(this, FeedActivity::class.java)
+            startActivity(intent)
         }
 
         var previousButton: View = binding.calendar1
