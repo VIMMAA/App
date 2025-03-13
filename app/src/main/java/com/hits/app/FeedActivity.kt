@@ -2,15 +2,11 @@ package com.hits.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.hits.app.databinding.ActivityFeedBinding
 import com.hits.app.request.RequestAdapter
 import com.hits.app.request.RequestItem
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class FeedActivity : AppCompatActivity() {
