@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Handler().postDelayed(Runnable {
+        Handler().postDelayed({
             val intent = Intent(
                 this@MainActivity,
                 WelcomeActivity::class.java
