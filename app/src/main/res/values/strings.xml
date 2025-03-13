@@ -54,4 +54,7 @@
     <string name="placeholder">Введите что-нибудь</string>
     <string name="nothing">Ничего нет</string>
     <string name="advertisement">Здесь могла быть ваша реклама</string>
+    <string name="check">На проверке</string>
+    <string name="req">Заявка №</string>
+    <string name="date">Дата подачи</string>
 </resources>
