@@ -28,28 +28,28 @@
           android:layout_marginTop="36dp">
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/buttons"
-            app:layout_constraintTop_toBottomOf="@+id/additional_comments"
-            android:background="@color/transparent">
+            android:background="@color/transparent"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/attached_files">
 
           <Button
               android:id="@+id/edit"
               android:layout_width="match_parent"
               android:layout_height="60dp"
-              android:theme="@style/CustomButton"
+              android:layout_marginTop="20dp"
               android:background="@drawable/blue_button"
-              android:textColor="@color/white"
               android:fontFamily="@font/manrope_bold"
+              android:text="@string/edit"
               android:textAllCaps="false"
+              android:textColor="@color/white"
+              android:theme="@style/CustomButton"
               app:layout_constraintBottom_toBottomOf="parent"
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              android:layout_marginTop="20dp"
-              android:text="@string/edit" />
+              app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
 
         <ImageButton
@@ -75,29 +75,6 @@
             app:layout_constraintStart_toEndOf="@+id/back"
             android:layout_marginLeft="16dp"
             android:background="@color/transparent" />
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/light_grey"
-            app:cardCornerRadius="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/additional_comments_title"
-            android:id="@+id/additional_comments"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp"
-            android:background="@color/transparent">
-
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/additional_comments_text"
-              android:textColor="@color/white"
-              android:layout_margin="16dp"
-              android:background="@color/transparent"
-              android:hint="@string/nothing"
-              android:textColorHint="@color/teal_700" />
-        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -178,19 +155,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendar_container"
-            android:layout_marginTop="16dp"
-            android:background="@color/transparent" />
-
-        <TextView
-            android:text="@string/additional_comments"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/additional_comments_title"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/attached_files"
             android:layout_marginTop="16dp"
             android:background="@color/transparent" />
 

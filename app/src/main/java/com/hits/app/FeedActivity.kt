@@ -27,8 +27,12 @@ class FeedActivity : AppCompatActivity() {
         list.adapter = adapter
 
         binding.newReq.setOnClickListener() {
+            val intent = Intent(this, ApplicationCreatorActivity::class.java)
+            startActivity(intent)
+
             val newReq = RequestItem(items.size + 1)
             items.add(0, newReq)
+
             adapter.notifyDataSetChanged()
         }
 
@@ -36,13 +40,6 @@ class FeedActivity : AppCompatActivity() {
             finish()
 
             val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.newReq.setOnClickListener {
-            finish()
-
-            val intent = Intent(this, ApplicationCreatorActivity::class.java)
             startActivity(intent)
         }
 

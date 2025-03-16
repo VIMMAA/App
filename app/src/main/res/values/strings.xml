@@ -51,10 +51,11 @@
     <string name="calendar_6">СБ</string>
     <string name="createReq">Создать заявку</string>
     <string name="listReq">Список заявок</string>
-    <string name="placeholder">Введите что-нибудь</string>
+    <string name="placeholder">Введите комментарий</string>
     <string name="nothing">Ничего нет</string>
     <string name="advertisement">Здесь могла быть ваша реклама</string>
     <string name="check">На проверке</string>
     <string name="req">Заявка №</string>
     <string name="date">Дата подачи</string>
+    <string name="month_example">Март</string>
 </resources>

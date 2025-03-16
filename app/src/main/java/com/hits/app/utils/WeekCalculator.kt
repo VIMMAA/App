@@ -34,7 +34,7 @@ class WeekCalculator {
     }
 
     // Возвращает начало указанного дня недели
-    fun getStartOfDayOfWeek(index: Int): Date {
+    fun getStartDateOfWeek(index: Int): Date {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
         calendar.add(Calendar.DAY_OF_WEEK, index)
 
@@ -46,7 +46,7 @@ class WeekCalculator {
     }
 
     // Возвращает окончание указанного дня недели
-    fun getEndOfDayOfWeek(index: Int): Date {
+    fun getEndDateOfWeek(index: Int): Date {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
         calendar.add(Calendar.DAY_OF_WEEK, index + 1)
 
