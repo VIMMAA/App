@@ -18,7 +18,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:id="@+id/first"
+                android:id="@+id/s1"
                 android:background="@color/light_grey"
                 android:orientation="horizontal"
                 android:layout_marginBottom="1dp"
@@ -190,7 +190,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@color/light_grey"
-                android:id="@+id/second"
+                android:id="@+id/s2"
                 android:orientation="horizontal"
                 android:layout_marginBottom="1dp"
                 android:gravity="center">
@@ -359,7 +359,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:id="@+id/third"
+                android:id="@+id/s3"
                 android:background="@color/light_grey"
                 android:orientation="horizontal"
                 android:layout_marginBottom="1dp"
@@ -529,7 +529,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:id="@+id/fourth"
+                android:id="@+id/s4"
                 android:background="@color/light_grey"
                 android:orientation="horizontal"
                 android:layout_marginBottom="1dp"
@@ -699,7 +699,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:id="@+id/fifth"
+                android:id="@+id/s5"
                 android:background="@color/light_grey"
                 android:orientation="horizontal"
                 android:layout_marginBottom="1dp"
@@ -869,7 +869,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:id="@+id/sixth"
+                android:id="@+id/s6"
                 android:background="@color/light_grey"
                 android:orientation="horizontal"
                 android:paddingTop="1dp"

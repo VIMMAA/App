@@ -2,6 +2,7 @@ package com.hits.app
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -18,6 +19,7 @@ import androidx.cardview.widget.CardView
 import com.hits.app.data.remote.Network
 import com.hits.app.databinding.ActivityApplicationCreatorBinding
 import com.hits.app.databinding.CalendarBinding
+import com.hits.app.utils.CalendarDay
 import com.hits.app.utils.WeekCalculator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +29,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -57,6 +60,15 @@ class ApplicationCreatorActivity : AppCompatActivity() {
     private val pickImageLauncher = registerForActivityResult(GetContent()) { uri ->
         uri?.let { attachImage(it) }
     }
+    private val calendar = Calendar.getInstance()
+    private var currentMonth = calendar.get(Calendar.MONTH)
+    private var currentYear = calendar.get(Calendar.YEAR)
+    private var differenceMonth: Int = 0
+    private var differenceYear: Int = 0
+
+    // TODO: только при нажатии на кнопку сохранения все дни конвертируются в пары в список ниже
+    private val ChosenDaysList: MutableList<CalendarDay> = arrayListOf()
+    private val ChosenLessonsList: List<Date> = arrayListOf()
 
     private enum class PresentationMode { WEEK, MONTH }
     private enum class DayOfWeek { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY }
@@ -146,6 +158,87 @@ class ApplicationCreatorActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+    private fun setMonth() {
+        // Получаем текущую дату
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        currentMonth += differenceMonth
+        differenceMonth = 0
+        currentYear += differenceYear
+        differenceYear = 0
+
+        calendar.set(Calendar.MONTH, currentMonth)
+        calendar.set(Calendar.YEAR, currentYear)
+
+        val dayOfWeek = countDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK))
+
+        // Получаем числа для текущего, предыдущего и следующего месяцев
+        val currentMonthDays = getDaysInMonth(currentMonth, currentYear)
+        val prevMonthDays = getDaysInMonth(currentMonth - 1, currentYear)
+
+        var day = 1
+        var nextMonthDay = 1
+        for (i in 1..<dayOfWeek) {
+            val button = calendarBinding.root.findViewById<Button>(
+                resources.getIdentifier("day_$i", "id", packageName)
+            )
+            button.text = (prevMonthDays.size - dayOfWeek + i + 1).toString()
+            button.setTextColor(getColor(R.color.grey_border))
+            button.isEnabled = false
+        }
+        for (i in dayOfWeek..42) {
+            val button = calendarBinding.root.findViewById<Button>(
+                resources.getIdentifier("day_$i", "id", packageName)
+            )
+
+            // Устанавливаем цвет текста в зависимости от месяца
+            if (day in currentMonthDays) {
+                button.setOnClickListener() { clickOnDay(button) }
+                button.text = day.toString()
+                button.setTextColor(getColor(R.color.white))
+                button.isEnabled = true
+                day++
+            } else {
+                button.text = nextMonthDay.toString()
+                button.setTextColor(getColor(R.color.grey_border))
+                button.isEnabled = false
+                nextMonthDay++
+            }
+        }
+
+        binding.week.text = getCurrentMonthName(currentMonth)
+    }
+
+    private fun clickOnDay(button: Button) {
+        if (button.background is ColorDrawable) {
+            button.setBackgroundResource(R.drawable.blue_button)
+            val day = CalendarDay(
+                currentYear,
+                currentMonth,
+                Integer.parseInt(button.text.toString()),
+                resources.getResourceName(button.id).substringAfterLast("/")
+            )
+            ChosenDaysList.add(day)
+        } else {
+            button.setBackgroundResource(R.color.transparent)
+            ChosenDaysList.removeIf { it.year == currentYear && it.month == currentMonth && it.day.toString() == button.text.toString() }
+        }
+    }
+
+    private fun countDayOfWeek(day: Int): Int {
+        return when (day) {
+            1 -> 7
+            else -> day - 1
+        }
+    }
+
+    private fun getDaysInMonth(month: Int, year: Int): List<Int> {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, 1)
+        val maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+
+        return (1..maxDay).toList()
+    }
+
     private fun switchToMonthMode() {
         if (presentationMode == PresentationMode.WEEK) {
             presentationMode = PresentationMode.MONTH
@@ -160,7 +253,62 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
             binding.calendarContainer.removeView(binding.subjects)
             binding.calendarContainer.addView(calendarBinding.calendarContainer, 0)
+
+            setMonthDifference()
+            setMonth()
         }
+    }
+
+    private fun setMonthDifference() {
+        binding.left.setOnClickListener {
+            differenceMonth--
+            if (currentMonth == 0) {
+                currentMonth = 12
+                differenceYear--
+            }
+            setMonth()
+            switchMonthView()
+        }
+        binding.right.setOnClickListener {
+            differenceMonth++
+            if (currentMonth == 11) {
+                currentMonth = -1
+                differenceYear++
+            }
+            setMonth()
+            switchMonthView()
+        }
+    }
+
+    private fun switchMonthView() {
+        for (i in 1..42) {
+            val button = calendarBinding.root.findViewById<Button>(
+                resources.getIdentifier("day_$i", "id", packageName)
+            )
+
+            button.setBackgroundResource(R.color.transparent)
+        }
+
+        ChosenDaysList.forEach {
+            if (it.year == currentYear && it.month == currentMonth) {
+                val button = calendarBinding.root.findViewById<Button>(
+                    resources.getIdentifier(it.buttonName, "id", packageName)
+                )
+
+                button.setBackgroundResource(R.drawable.blue_button)
+            }
+        }
+    }
+
+    private fun getCurrentMonthName(currentMonth: Int): String {
+        // Массив с названиями месяцев на русском языке
+        val monthNames = arrayOf(
+            "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+            "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+        )
+
+        // Возвращаем название текущего месяца
+        return monthNames[currentMonth]
     }
 
     private fun switchToWeekMode() {
@@ -168,8 +316,11 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             presentationMode = PresentationMode.WEEK
             binding.calendarContainer.removeView(calendarBinding.calendarContainer)
             binding.calendarContainer.addView(binding.subjects, 0)
+
+            // Делать обратно текст и листенеры на неделю
         }
     }
+
 
     // Обновить расписание на неделю
     // TODO: Выполнить запрос на бэкенд для получения расписания
@@ -257,7 +408,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             subjectOrderView.layoutParams = binding.subjectOrder.layoutParams
             subjectOrderView.setBackgroundResource(R.color.transparent)
             subjectOrderView.text = "${order}-ая пара"
-            subjectOrderView.setTextColor(getColor(R.color.teal_200))
+            subjectOrderView.setTextColor(getColor(R.color.grey_faded))
 
             subjectView.setOnClickListener {
                 val selected = lesson.selected
@@ -288,7 +439,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                     boundView.setBackgroundResource(R.color.transparent)
                     boundView.gravity = Gravity.CENTER
                     boundView.text = "$t1 - $t2 • перерыв"
-                    boundView.setTextColor(getColor(R.color.teal_200))
+                    boundView.setTextColor(getColor(R.color.grey_faded))
 
                     binding.subjects.addView(boundView)
                 }
@@ -318,7 +469,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
         binding.save.setBackgroundResource(R.drawable.grey_button)
         binding.save.isEnabled = false
-        binding.save.setTextColor(getColor(R.color.teal_700))
+        binding.save.setTextColor(getColor(R.color.grey_faded))
     }
 
     private fun attachImage(uri: Uri) {
