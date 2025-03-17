@@ -333,7 +333,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="@color/dark_grey"
                 android:layout_margin="4dp"
@@ -342,7 +342,7 @@
 
               <TextView
                   android:text="@string/subject_example_1"
-                  android:layout_width="wrap_content"
+                  android:layout_width="240dp"
                   android:layout_height="wrap_content"
                   android:id="@+id/subject_name"
                   android:textColor="@color/white"

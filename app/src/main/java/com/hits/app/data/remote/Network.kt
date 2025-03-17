@@ -24,7 +24,7 @@ object Network {
         val contentType = "application/json".toMediaType()
         Retrofit.Builder()
             .client(httpClient)
-            .baseUrl("http://109.68.214.19/api/")
+            .baseUrl("https://okr.yzserver.ru/api/")
             .addConverterFactory(Json.asConverterFactory(contentType))
             .build()
     }

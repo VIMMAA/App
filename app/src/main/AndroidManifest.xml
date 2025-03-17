@@ -11,16 +11,15 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/first"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/CustomTheme">
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:fitsSystemWindows="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".SignActivity"
@@ -63,10 +62,10 @@
             android:name=".ApplicationCreatorActivity"
             android:exported="true"
             android:fitsSystemWindows="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 </manifest>
