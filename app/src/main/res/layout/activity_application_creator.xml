@@ -355,7 +355,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/subject_order"
-                  android:textColor="@color/white"
+                  android:textColor="@color/grey_faded"
                   android:gravity="right"
                   android:layout_marginRight="16dp"
                   android:background="@color/transparent"
@@ -370,7 +370,7 @@
                 android:id="@+id/bound"
                 android:layout_margin="6dp"
                 android:gravity="center"
-                android:textColor="@color/white"
+                android:textColor="@color/grey_faded"
                 android:background="@color/transparent" />
 
           </LinearLayout>

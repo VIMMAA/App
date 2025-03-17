@@ -222,6 +222,15 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             button.setBackgroundResource(R.color.transparent)
             ChosenDaysList.removeIf { it.year == currentYear && it.month == currentMonth && it.day.toString() == button.text.toString() }
         }
+        if(ChosenDaysList.size > 0) {
+            binding.save.setBackgroundResource(R.drawable.blue_button)
+            binding.save.setTextColor(getColor(R.color.white))
+        }
+        else {
+            //TODO: если выбраны пары в Week Mode, то не делать
+            binding.save.setBackgroundResource(R.drawable.grey_button)
+            binding.save.setTextColor(getColor(R.color.grey_faded))
+        }
     }
 
     private fun countDayOfWeek(day: Int): Int {

@@ -37,10 +37,10 @@ class FeedActivity : AppCompatActivity() {
         }
 
         binding.profile.setOnClickListener {
-            finish()
-
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
+
+            finish()
         }
 
         supportActionBar?.hide()

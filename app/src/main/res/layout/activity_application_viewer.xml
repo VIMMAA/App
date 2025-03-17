@@ -139,7 +139,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/submission_date_title"
                 app:layout_constraintStart_toEndOf="@+id/submission_date_title"
                 android:layout_marginStart="8dp"
-                android:textColor="@color/teal_200"
+                android:textColor="@color/white"
                 android:background="@color/transparent" />
           </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -209,7 +209,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_2"
-                android:textColor="@color/teal_200"
+                android:textColor="@color/white"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -230,7 +230,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_3"
-                android:textColor="@color/teal_200"
+                android:textColor="@color/white"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -252,7 +252,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_4"
-                android:textColor="@color/teal_200"
+                android:textColor="@color/white"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -274,7 +274,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_5"
-                android:textColor="@color/teal_200"
+                android:textColor="@color/white"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -296,7 +296,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/calendar_6"
-                android:textColor="@color/teal_200"
+                android:textColor="@color/white"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -365,7 +365,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/subject_order"
-                  android:textColor="@color/teal_200"
+                  android:textColor="@color/grey_faded"
                   android:gravity="right"
                   android:layout_marginRight="16dp"
                   android:background="@color/transparent"
@@ -380,7 +380,7 @@
                 android:id="@+id/bound"
                 android:layout_margin="6dp"
                 android:gravity="center"
-                android:textColor="@color/teal_200"
+                android:textColor="@color/grey_faded"
                 android:background="@color/transparent" />
 
           </LinearLayout>

@@ -139,7 +139,7 @@ class ApplicationEditorActivity : AppCompatActivity() {
                 } else {
                     (previousButton as Button).apply {
                         setBackgroundResource(R.color.transparent)
-                        setTextColor(getColor(R.color.teal_200))
+                        setTextColor(getColor(R.color.white))
                     }
                 }
 
@@ -356,7 +356,7 @@ class ApplicationEditorActivity : AppCompatActivity() {
                 subjectOrderView.layoutParams = binding.subjectOrder.layoutParams
                 subjectOrderView.setBackgroundResource(R.color.transparent)
                 subjectOrderView.text = "${index + 1}-ая пара"
-                subjectOrderView.setTextColor(getColor(R.color.teal_200))
+                subjectOrderView.setTextColor(getColor(R.color.white))
 
                 subjectView.setOnClickListener {
                     val selected = subject["selected"] as Boolean
@@ -387,7 +387,7 @@ class ApplicationEditorActivity : AppCompatActivity() {
                         boundView.setBackgroundResource(R.color.transparent)
                         boundView.gravity = Gravity.CENTER
                         boundView.text = "$t1 - $t2 • перерыв"
-                        boundView.setTextColor(getColor(R.color.teal_200))
+                        boundView.setTextColor(getColor(R.color.white))
 
                         binding.subjects.addView(boundView)
                     }
@@ -421,7 +421,7 @@ class ApplicationEditorActivity : AppCompatActivity() {
 
         binding.save.setBackgroundResource(R.drawable.grey_button)
         binding.save.isEnabled = false
-        binding.save.setTextColor(getColor(R.color.teal_700))
+        binding.save.setTextColor(getColor(R.color.grey_faded))
     }
 
     // Конвертация изображения в Base64
