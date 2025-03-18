@@ -7,12 +7,18 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.hits.app.data.remote.Network
+import com.hits.app.data.remote.api.UserApi
 import com.hits.app.databinding.ActivitySignBinding
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 class SignActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivitySignBinding
     private lateinit var emailInput: EditText
     private lateinit var passwordInput: EditText
@@ -24,23 +30,50 @@ class SignActivity : AppCompatActivity() {
         binding = ActivitySignBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.back.setOnClickListener() {
+        binding.back.setOnClickListener {
             finish()
         }
 
-        binding.signIn.setOnClickListener() {
-            binding.signIn.setOnClickListener() {
-                val intent = Intent(this, FeedActivity::class.java)
-                startActivity(intent)
+        binding.signIn.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val request = Network.userApi.login(
+                    UserApi.LoginParams(
+                        email = emailInput.text.toString(),
+                        password = passwordInput.text.toString()
+                    )
+                )
+
+                request.body()?.let { response ->
+                    getSharedPreferences("preferences", MODE_PRIVATE)
+                        .edit()
+                        .putString("token", response.token)
+                        .putString("role", response.role)
+                        .commit()
+
+                    withContext(Dispatchers.Main) {
+                        val intent = Intent(applicationContext, FeedActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+
+                request.errorBody()?.let { response ->
+                    val json = JSONObject(response.string())
+                    val message = json.getString(
+                        if (json.has("message")) "message" else "title"
+                    )
+
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
 
-        supportActionBar?.hide();
+        supportActionBar?.hide()
 
         emailInput = binding.email
         passwordInput = binding.password
         loginButton = binding.signIn
-
 
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(

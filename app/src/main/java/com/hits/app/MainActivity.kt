@@ -6,22 +6,27 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
-
-    private var SPLASH_TIMER = 1000
+    private val SPLASH_TIMER = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_main)
 
         Handler().postDelayed({
+            val preferences = getSharedPreferences("preferences", MODE_PRIVATE)
+            val token = preferences.getString("token", null)
+            val role = preferences.getString("role", null)
+
+            finish()
+
             val intent = Intent(
-                this@MainActivity,
-                WelcomeActivity::class.java
+                this,
+                if (token != null && role != null) FeedActivity::class.java
+                else WelcomeActivity::class.java
             )
             startActivity(intent)
-            finish()
         }, SPLASH_TIMER.toLong())
-
 
         supportActionBar?.hide()
     }
