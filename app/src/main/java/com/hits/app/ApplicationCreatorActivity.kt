@@ -24,9 +24,9 @@ import com.hits.app.utils.WeekLesson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
@@ -37,18 +37,11 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
     private var schedule = mutableListOf<WeekLesson>()
     private var attachedFiles: ArrayList<MutableMap<String, Any?>> = arrayListOf()
-    private var currentDay = DayOfWeek.MONDAY
-    private var selectedDay = DayOfWeek.MONDAY
     private var presentationMode = PresentationMode.WEEK
-    private val days = mutableMapOf<DayOfWeek, Button>()
+    private val days = mutableMapOf<Int, Button>()
 
     private val weekCalculator = WeekCalculator()
-    private val formatter by lazy {
-        DateTimeFormatter.ofPattern(
-            "hh:mm",
-            Locale("ru")
-        ).withZone(ZoneOffset.UTC)
-    }
+
     private val dateFormatter by lazy {
         DateTimeFormatter.ofPattern(
             "yyyy-MM-dd",
@@ -61,6 +54,9 @@ class ApplicationCreatorActivity : AppCompatActivity() {
     private val calendar = Calendar.getInstance()
     private var currentMonth = calendar.get(Calendar.MONTH)
     private var currentYear = calendar.get(Calendar.YEAR)
+    private val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+    private var dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+
     private var differenceMonth: Int = 0
     private var differenceYear: Int = 0
 
@@ -69,23 +65,15 @@ class ApplicationCreatorActivity : AppCompatActivity() {
     private val ChosenLessonsList: MutableList<WeekLesson> = arrayListOf()
 
     private enum class PresentationMode { WEEK, MONTH }
-    private enum class DayOfWeek { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY }
-    private class Lesson(
-        val id: String,
-        val name: String,
-        val startTime: String,
-        val endTime: String,
-        var selected: Boolean,
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        updateSchedule()
-
         binding = ActivityApplicationCreatorBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         calendarBinding = CalendarBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        updateSchedule()
 
         binding.back.setOnClickListener {
             finish()
@@ -95,24 +83,22 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             weekCalculator.previousWeek()
             updateWeek()
             updateSchedule()
-            selectDay(currentDay)
         }
         binding.right.setOnClickListener {
             weekCalculator.nextWeek()
             updateWeek()
             updateSchedule()
-            selectDay(currentDay)
         }
 
         days.clear()
         days.putAll(
             listOf(
-                DayOfWeek.MONDAY to binding.calendar1,
-                DayOfWeek.TUESDAY to binding.calendar2,
-                DayOfWeek.WEDNESDAY to binding.calendar3,
-                DayOfWeek.THURSDAY to binding.calendar4,
-                DayOfWeek.FRIDAY to binding.calendar5,
-                DayOfWeek.SATURDAY to binding.calendar6,
+                1 to binding.calendar1,
+                2 to binding.calendar2,
+                3 to binding.calendar3,
+                4 to binding.calendar4,
+                5 to binding.calendar5,
+                6 to binding.calendar6,
             )
         )
 
@@ -133,7 +119,8 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                 button.setBackgroundResource(R.drawable.blue_button)
                 button.setTextColor(getColor(R.color.white))
 
-                selectDay(day)
+                dayOfWeek = day
+                selectDay(dayOfWeek)
             }
         }
 
@@ -151,7 +138,6 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             createApplication()
         }
 
-        selectDay(currentDay)
         updateWeek()
 
         supportActionBar?.hide()
@@ -221,14 +207,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             button.setBackgroundResource(R.color.transparent)
             ChosenDaysList.removeIf { it.year == currentYear && it.month == currentMonth && it.day.toString() == button.text.toString() }
         }
-        if (ChosenDaysList.size > 0) {
-            binding.save.setBackgroundResource(R.drawable.blue_button)
-            binding.save.setTextColor(getColor(R.color.white))
-        } else {
-            //TODO: если выбраны пары в Week Mode, то не делать
-            binding.save.setBackgroundResource(R.drawable.grey_button)
-            binding.save.setTextColor(getColor(R.color.grey_faded))
-        }
+        updateSaveButton()
     }
 
     private fun countDayOfWeek(day: Int): Int {
@@ -328,26 +307,23 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                 weekCalculator.previousWeek()
                 updateWeek()
                 updateSchedule()
-                selectDay(currentDay)
             }
             binding.right.setOnClickListener {
                 weekCalculator.nextWeek()
                 updateWeek()
                 updateSchedule()
-                selectDay(currentDay)
             }
 
             updateWeek()
             updateSchedule()
-            selectDay(currentDay)
         }
     }
 
 
     // Обновить расписание на неделю
     private fun updateSchedule() {
-        val dateFrom = weekCalculator.getStartDateOfWeek(0)
-        val dateTo = weekCalculator.getEndDateOfWeek(5)
+        val dateFrom = weekCalculator.getStartDateOfWeek()
+        val dateTo = weekCalculator.getEndDateOfWeek()
 
         CoroutineScope(Dispatchers.IO).launch {
             val api = Network.scheduleApi
@@ -371,11 +347,42 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                 })
             }
         }
+        selectDay(dayOfWeek)
     }
 
-    // Создать заявку
     // TODO: Выполнить запрос на бэкенд для создания
     private fun createApplication() {
+        //ChosenLessonsList
+        //ChosenDaysList
+
+        for (i in 0..<ChosenDaysList.size) {
+
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val api = Network.applicationApi
+            val response = api.postApplication(
+                lessons = ,
+                files =
+            )
+
+            schedule = arrayListOf()
+            response.body()?.let { lessons ->
+                schedule.addAll(lessons.map { lesson ->
+                    WeekLesson(
+                        id = lesson.id,
+                        name = lesson.name,
+                        year = getYear(lesson.startTime),
+                        month = getMonth(lesson.startTime),
+                        day = getDay(lesson.startTime),
+                        timeSlot = getTimeSlot(lesson.startTime),
+                        selected = false,
+                    )
+                })
+            }
+        }
+
+
         finish()
     }
 
@@ -386,33 +393,42 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
         binding.week.text = "$startOfWeek - $endOfWeek"
 
-        selectDay(currentDay)
+        selectDay(dayOfWeek)
         updateSaveButton()
     }
 
     // Выбрать день
-    private fun selectDay(day: DayOfWeek) {
+    private fun selectDay(day: Int) {
 
         binding.subjects.removeAllViews()
-        selectedDay = day
 
+        weekCalculator.getStartDay()
+        var month = weekCalculator.getMonth()
 
-        var prev: WeekLesson? = null
+        val editedDay = if (day == 7) 1 else day + 1
+        val dayOfMonth = weekCalculator.getDayOfMonth(editedDay, month)
+        month = weekCalculator.getMonth()
+        val year = weekCalculator.getYear()
 
-        //TODO: ВОТ ЗДЕСЬ УСТРОИТЬ ТАК, ЧТОБЫ В SHEDULE ПРОВЕРЯЛИ, СЕГОДНЯШНИЙ ЛИ ВЫБРАН ДЕНЬ
-        // ПОСТАВИТЬ ЛИСТЕНЕРЫ НА <>, ЧТОБЫ CurrentDay МЕНЯЛСЯ
-        // Установка экранов расписания
         schedule.filter {
-            it.year == currentYear &&
-            it.month == currentMonth
+            it.year == year &&
+                    it.month == month + 1 &&
+                    it.day == dayOfMonth
         }.forEach { lesson ->
+
+            val selected = ChosenLessonsList.find {
+                it.year == lesson.year &&
+                        it.month == lesson.month &&
+                        it.day == lesson.day &&
+                        it.timeSlot == lesson.timeSlot
+            }?.selected
 
             // Предмет
             val subjectView = CardView(binding.subjects.context)
 
             subjectView.layoutParams = binding.subject.layoutParams
             subjectView.setCardBackgroundColor(
-                getColor(if (lesson.selected) R.color.blue else R.color.dark_grey)
+                getColor(if (selected == true) R.color.blue else R.color.dark_grey)
             )
             subjectView.radius = 8f
 
@@ -436,20 +452,20 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                 val selected = lesson.selected
 
                 lesson.selected = !selected
-                updateSaveButton()
 
                 if (selected) {
                     subjectView.setCardBackgroundColor(getColor(R.color.dark_grey))
-                    ChosenLessonsList.add(lesson)
-                } else {
-                    subjectView.setCardBackgroundColor(getColor(R.color.blue))
                     ChosenLessonsList.removeIf {
                         it.year == lesson.year &&
                                 it.month == lesson.month &&
                                 it.day == lesson.day &&
                                 it.timeSlot == lesson.timeSlot
                     }
+                } else {
+                    subjectView.setCardBackgroundColor(getColor(R.color.blue))
+                    ChosenLessonsList.add(lesson)
                 }
+                updateSaveButton()
             }
 
             subjectView.addView(subjectNameView)
@@ -476,7 +492,6 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 //                }
 //            }
 
-            prev = lesson
             binding.subjects.addView(subjectView)
         }
     }
@@ -507,7 +522,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
     // Обновить кнопку для сохранения
     private fun updateSaveButton() {
-        val countOfSelectedLessons = schedule.count { it.selected }
+        val countOfSelectedLessons = ChosenLessonsList.size + ChosenDaysList.size
 
         if (countOfSelectedLessons > 0) {
             if (binding.save.isEnabled) return

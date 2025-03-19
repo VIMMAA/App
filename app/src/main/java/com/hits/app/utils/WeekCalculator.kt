@@ -5,9 +5,29 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class WeekCalculator {
+class WeekCalculator (
+) {
     private val calendar = Calendar.getInstance()
     private val formatter = SimpleDateFormat("d MMMM", Locale("ru"))
+
+    private val currDay = calendar.get(Calendar.DAY_OF_WEEK)
+
+    private var startDay: Int = 0
+    private var endDay: Int = 0
+
+    fun getStartDay () {
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        startDay = calendar.get(Calendar.DAY_OF_MONTH)
+    }
+
+    fun getEndDay () {
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY)
+        endDay = calendar.get(Calendar.DAY_OF_MONTH)
+    }
+
+    fun getMonth(): Int {
+        return calendar.get(Calendar.MONTH)
+    }
 
     // Форматирование даты в строку
     private fun formatDate(date: Date): String {
@@ -23,38 +43,23 @@ class WeekCalculator {
 
     // Возвращает конец текущей недели
     fun getEndOfWeek(): String {
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-        calendar.add(Calendar.DAY_OF_WEEK, 6)
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
 
-        val date = formatDate(calendar.time)
-
-        calendar.add(Calendar.DAY_OF_WEEK, -6)
-
-        return date
+        return formatDate(calendar.time)
     }
 
     // Возвращает начало указанного дня недели
-    fun getStartDateOfWeek(index: Int): Date {
+    fun getStartDateOfWeek(): Date {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-        calendar.add(Calendar.DAY_OF_WEEK, index)
 
-        val time = calendar.time
-
-        calendar.add(Calendar.DAY_OF_WEEK, -index)
-
-        return time
+        return calendar.time
     }
 
     // Возвращает окончание указанного дня недели
-    fun getEndDateOfWeek(index: Int): Date {
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-        calendar.add(Calendar.DAY_OF_WEEK, index + 1)
+    fun getEndDateOfWeek(): Date {
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
 
-        val time = calendar.time
-
-        calendar.add(Calendar.DAY_OF_WEEK, -(index + 1))
-
-        return time
+        return calendar.time
     }
 
     // Переход к следующей неделе
@@ -75,6 +80,34 @@ class WeekCalculator {
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
+    }
+
+    fun getDayOfMonth(day: Int, month: Int): Int {
+        calendar.set(Calendar.DAY_OF_MONTH, startDay)
+        calendar.set(Calendar.MONTH, month)
+
+        // Получаем текущий день недели для заданной начальной даты
+        val currDayOfWeek = 2
+
+        // Вычисляем разницу между текущим днем недели и целевым днем недели
+        // Если целевой день недели раньше, чем текущий, корректируем на 7 дней назад
+        val diff = if (day >= currDayOfWeek) {
+            day - currDayOfWeek
+        } else {
+            day - currDayOfWeek + 7
+        }
+
+        // Добавляем разницу дней к началу недели
+        calendar.add(Calendar.DAY_OF_MONTH, diff)
+
+        val month = calendar.get(Calendar.MONTH)
+
+        // Получаем число месяца для найденного дня недели
+        return calendar.get(Calendar.DAY_OF_MONTH)
+    }
+
+    fun getYear(): Int {
+        return calendar.get(Calendar.YEAR)
     }
 
     init {

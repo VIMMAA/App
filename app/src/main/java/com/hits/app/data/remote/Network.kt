@@ -1,5 +1,6 @@
 package com.hits.app.data.remote
 
+import com.hits.app.data.remote.api.ApplicationApi
 import com.hits.app.data.remote.api.ScheduleApi
 import com.hits.app.data.remote.api.UserApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -34,5 +35,9 @@ object Network {
 
     val scheduleApi: ScheduleApi by lazy {
         retrofit.create(ScheduleApi::class.java)
+    }
+
+    val applicationApi: ApplicationApi by lazy {
+        retrofit.create(ApplicationApi::class.java)
     }
 }

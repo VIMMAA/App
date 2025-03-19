@@ -106,7 +106,7 @@ class ApplicationViewerActivity : AppCompatActivity() {
         applicationDate = Date(2024, 6, 0)
         weekCalculator.setDate(applicationDate)
 
-        val dateFromExample = weekCalculator.getStartDateOfWeek(0)
+        val dateFromExample = weekCalculator.getStartDateOfWeek()
         val dateToExample = Date(dateFromExample.time + 1000 * 60 * 90)
 
         schedule = arrayListOf(
@@ -133,8 +133,8 @@ class ApplicationViewerActivity : AppCompatActivity() {
     // Обновить расписание на неделю
     // TODO: Выполнить запрос на бэкенд для получения расписания
     private fun updateSchedule() {
-        val dateFrom = weekCalculator.getStartDateOfWeek(0)
-        val dateTo = weekCalculator.getEndDateOfWeek(5)
+        val dateFrom = weekCalculator.getStartDateOfWeek()
+        val dateTo = weekCalculator.getEndDateOfWeek()
 
         val newSchedule: ArrayList<MutableMap<String, Any>> = arrayListOf()
 
@@ -206,8 +206,8 @@ class ApplicationViewerActivity : AppCompatActivity() {
         if (number < 7) {
             currentDayOfWeek = number
 
-            val startOfDayOfWeek = weekCalculator.getStartDateOfWeek(currentDayOfWeek - 1)
-            val endOfDayOfWeek = weekCalculator.getEndDateOfWeek(currentDayOfWeek - 1)
+            val startOfDayOfWeek = weekCalculator.getStartDateOfWeek()
+            val endOfDayOfWeek = weekCalculator.getEndDateOfWeek()
 
             // Установка экранов расписания
             schedule.forEachIndexed { index, subject ->
