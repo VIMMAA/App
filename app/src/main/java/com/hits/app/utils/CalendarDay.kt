@@ -7,5 +7,4 @@ class CalendarDay (
     val month: Int,
     val day: Int,
     val buttonName: String
-) {
-}
+)

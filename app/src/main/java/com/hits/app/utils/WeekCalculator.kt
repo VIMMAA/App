@@ -20,11 +20,6 @@ class WeekCalculator (
         startDay = calendar.get(Calendar.DAY_OF_MONTH)
     }
 
-    fun getEndDay () {
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY)
-        endDay = calendar.get(Calendar.DAY_OF_MONTH)
-    }
-
     fun getMonth(): Int {
         return calendar.get(Calendar.MONTH)
     }
