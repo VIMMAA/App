@@ -404,7 +404,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/subject"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_margin="4dp"
                 android:background="@color/transparent"
                 app:cardBackgroundColor="@color/dark_grey"
@@ -412,7 +412,7 @@
 
               <TextView
                   android:id="@+id/subject_name"
-                  android:layout_width="wrap_content"
+                  android:layout_width="240dp"
                   android:layout_height="wrap_content"
                   android:layout_gravity="center|left"
                   android:layout_marginLeft="16dp"

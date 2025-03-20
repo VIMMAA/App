@@ -70,7 +70,5 @@ class ProfileActivity : AppCompatActivity() {
                 }
             }
         }
-
-        supportActionBar?.hide()
     }
 }

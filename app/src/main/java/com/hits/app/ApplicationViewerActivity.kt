@@ -7,15 +7,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.hits.app.application.getApplicationInfo
 import com.hits.app.application.getDay
 import com.hits.app.application.getMonth
 import com.hits.app.application.getTimeSlot
 import com.hits.app.application.getYear
-import com.hits.app.application.getApplicationInfo
 import com.hits.app.data.remote.Network
 import com.hits.app.data.remote.dto.ApplicationGetResponseDto
-import com.hits.app.data.remote.dto.AttachedFileDto
-import com.hits.app.data.remote.dto.NewApplicationRequestDto
 import com.hits.app.databinding.ActivityApplicationViewerBinding
 import com.hits.app.databinding.CalendarBinding
 import com.hits.app.utils.CalendarDay
@@ -26,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
-import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -41,7 +39,7 @@ class ApplicationViewerActivity : AppCompatActivity() {
     private var attachedFiles: ArrayList<MutableMap<String, String>> = arrayListOf()
     private var presentationMode = PresentationMode.WEEK
     private val days = mutableMapOf<Int, Button>()
-    val id = intent.getStringExtra("id").toString()
+    lateinit var id: String
 
     private val weekCalculator = WeekCalculator()
 
@@ -67,6 +65,8 @@ class ApplicationViewerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        id = intent.getStringExtra("id").toString()
 
         binding = ActivityApplicationViewerBinding.inflate(layoutInflater)
         calendarBinding = CalendarBinding.inflate(layoutInflater)
@@ -137,8 +137,6 @@ class ApplicationViewerActivity : AppCompatActivity() {
         }
 
         updateWeek()
-
-        supportActionBar?.hide()
     }
 
     private fun updateApplication() {
@@ -151,7 +149,10 @@ class ApplicationViewerActivity : AppCompatActivity() {
                 "Bearer $token",
                 id
             )
-            updateData(response)
+
+            withContext(Dispatchers.Main) {
+                updateData(response)
+            }
         }
 
         // разложить по полочкам lessons и attachedFiles
@@ -204,10 +205,12 @@ class ApplicationViewerActivity : AppCompatActivity() {
 
     // Установить основные данные
     private fun updateData(response: Response<ApplicationGetResponseDto>) {
-        val extraFormatter = SimpleDateFormat("dd.MM.yy", Locale("ru"))
+        val extraFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            .withZone(ZoneId.systemDefault())
 
         selectedLessonsList = getApplicationInfo(response.body()?.lessons)
-        val submissionDate = extraFormatter.format(response.body()?.submissionDate)
+        val timeInstant = Instant.parse(response.body()?.submissionDate)
+        val submissionDate = extraFormatter.format(timeInstant)
         val status = response.body()?.status
 
         binding.submissionDate.text = submissionDate
@@ -222,6 +225,12 @@ class ApplicationViewerActivity : AppCompatActivity() {
                 }
             )
         )
+        binding.prefixText.text = when (status) {
+            "NotDefined" -> "На проверке"
+            "Approved" -> "Одобрена"
+            "Declined" -> "Отклонена"
+            else -> "На проверке"
+        }
 
         // update attachedFiles
 

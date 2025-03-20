@@ -36,26 +36,23 @@ class FeedActivity : AppCompatActivity() {
         adapter = ApplicationAdapter(this, api, items)
         list.adapter = adapter
 
-        binding.newReq.setOnClickListener() {
+        binding.newReq.setOnClickListener {
             val intent = Intent(this, ApplicationCreatorActivity::class.java)
             startActivity(intent)
-
-            val newReq = ApplicationItem(items.size + 1)
-            items.add(0, newReq)
-
-            adapter.notifyDataSetChanged()
         }
 
         binding.profile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
-        //updateStudentApplicationList()
-
-        supportActionBar?.hide()
     }
 
-    private fun updateStudentApplicationList () {
+    override fun onStart() {
+        super.onStart()
+        updateStudentApplicationList()
+    }
+
+    private fun updateStudentApplicationList() {
         lifecycleScope.launch(Dispatchers.IO) {
 
             val preferences = getSharedPreferences("preferences", MODE_PRIVATE)
@@ -68,11 +65,15 @@ class FeedActivity : AppCompatActivity() {
                 if (response1.isSuccessful) {
                     items.clear()
 
-                    response1.body().let { ApplicationDto ->
-                        ApplicationDto?.let { it ->
+                    response1.body().let { dto ->
+                        dto?.let { it ->
                             items.addAll(it.map {
-                                ApplicationItem(it.id, items.size + 1, it.submissionDate, it.status)
-                            })
+                                ApplicationItem(
+                                    id = it.id,
+                                    applicationDate = it.submissionDate,
+                                    status = it.status,
+                                )
+                            }.reversed())
                         }
                     }
                     withContext(Dispatchers.Main) {

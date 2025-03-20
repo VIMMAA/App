@@ -69,8 +69,6 @@ class SignActivity : AppCompatActivity() {
             }
         }
 
-        supportActionBar?.hide()
-
         emailInput = binding.email
         passwordInput = binding.password
         loginButton = binding.signIn

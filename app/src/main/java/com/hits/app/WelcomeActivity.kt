@@ -24,7 +24,5 @@ class WelcomeActivity : AppCompatActivity() {
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
         }
-
-        supportActionBar?.hide();
     }
 }

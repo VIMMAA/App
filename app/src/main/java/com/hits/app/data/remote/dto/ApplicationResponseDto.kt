@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ApplicationResponseDto (
     val status: String,
-    val message: String
+    val message: String,
 )

@@ -1,41 +1,9 @@
 package com.hits.app.application
 
 import com.hits.app.data.remote.dto.LessonDto
-import com.hits.app.utils.CalendarDay
 import com.hits.app.utils.WeekLesson
 
-//data class ApplicationGetResponseDto (
-//    val id: String,
-//    val studentId: String,
-//    val submissionDate: String,
-//    val status: String,
-//    val lessons: List<LessonDto>,
-//    val attachedFiles: List<AttachedFileWithIdDto>,
-//    val comment: String
-//)
-//data class LessonDto(
-//    val id: String,
-//    val name: String,
-//    val startTime: String,
-//    val endTime: String
-//)
-//class WeekLesson (
-//    val id: String,
-//    val name: String,
-//    val year: Int,
-//    val month: Int,
-//    val day: Int,
-//    val timeSlot: Int,
-//    var selected: Boolean
-//)
-//class CalendarDay (
-//    val year: Int,
-//    val month: Int,
-//    val day: Int,
-//    val buttonName: String
-//)
-
-public fun getApplicationInfo (lessons: List<LessonDto>?) : MutableList<WeekLesson> {
+fun getApplicationInfo(lessons: List<LessonDto>?): MutableList<WeekLesson> {
     val selectedLessonsList: MutableList<WeekLesson> = arrayListOf()
 
     if (lessons != null) {

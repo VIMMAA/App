@@ -48,7 +48,7 @@ class ApplicationEditorActivity : AppCompatActivity() {
     private var attachedFiles: ArrayList<MutableMap<String, String>> = arrayListOf()
     private var presentationMode = PresentationMode.WEEK
     private val days = mutableMapOf<Int, Button>()
-    val id = intent.getStringExtra("id").toString()
+    private lateinit var id: String
 
     private val weekCalculator = WeekCalculator()
 
@@ -58,9 +58,10 @@ class ApplicationEditorActivity : AppCompatActivity() {
             Locale("ru")
         ).withZone(ZoneId.systemDefault())
     }
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let { attachImage(it) }
-    }
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let { attachImage(it) }
+        }
     private val calendar = Calendar.getInstance()
     private var currentMonth = calendar.get(Calendar.MONTH)
     private var currentYear = calendar.get(Calendar.YEAR)
@@ -81,6 +82,8 @@ class ApplicationEditorActivity : AppCompatActivity() {
         binding = ActivityApplicationEditorBinding.inflate(layoutInflater)
         calendarBinding = CalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        id = intent.getStringExtra("id").toString()
 
         updateSchedule()
 
@@ -159,8 +162,6 @@ class ApplicationEditorActivity : AppCompatActivity() {
         }
 
         updateWeek()
-
-        supportActionBar?.hide()
     }
 
     private fun setMonth() {
@@ -407,8 +408,13 @@ class ApplicationEditorActivity : AppCompatActivity() {
                 apiApplication.editApplication(
                     "Bearer $token", id,
                     NewApplicationRequestDto(
-                        lessons = resultList.map {"name: ${it.name}, startTime: ${it.startTime}, endTime: ${it.endTime}, id: ${it.id}"},
-                        files = attachedFiles.map { map -> AttachedFileDto(name = map["name"] ?: "", data = map["data"] ?: "") },
+                        lessons = resultList.map { "name: ${it.name}, startTime: ${it.startTime}, endTime: ${it.endTime}, id: ${it.id}" },
+                        files = attachedFiles.map { map ->
+                            AttachedFileDto(
+                                name = map["name"] ?: "",
+                                data = map["data"] ?: ""
+                            )
+                        },
                     )
                 )
             }

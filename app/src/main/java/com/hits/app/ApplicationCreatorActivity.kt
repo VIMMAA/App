@@ -148,8 +148,6 @@ class ApplicationCreatorActivity : AppCompatActivity() {
         }
 
         updateWeek()
-
-        supportActionBar?.hide()
     }
 
     private fun setMonth() {

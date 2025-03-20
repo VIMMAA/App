@@ -155,7 +155,5 @@ class SignupActivity : AppCompatActivity() {
         dateOfBirth.addTextChangedListener(textWatcher)
         email.addTextChangedListener(textWatcher)
         password.addTextChangedListener(textWatcher)
-
-        supportActionBar?.hide()
     }
 }

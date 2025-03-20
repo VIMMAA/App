@@ -27,7 +27,5 @@ class MainActivity : AppCompatActivity() {
             )
             startActivity(intent)
         }, SPLASH_TIMER.toLong())
-
-        supportActionBar?.hide()
     }
 }
