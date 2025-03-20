@@ -15,8 +15,14 @@ import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
+import com.hits.app.application.getDay
+import com.hits.app.application.getMonth
+import com.hits.app.application.getTimeSlot
+import com.hits.app.application.getYear
 import com.hits.app.data.remote.Network
+import com.hits.app.data.remote.dto.AttachedFileDto
 import com.hits.app.data.remote.dto.LessonDto
+import com.hits.app.data.remote.dto.NewApplicationRequestDto
 import com.hits.app.databinding.ActivityApplicationCreatorBinding
 import com.hits.app.databinding.CalendarBinding
 import com.hits.app.utils.CalendarDay
@@ -26,8 +32,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.ZoneId
@@ -41,7 +45,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
     private lateinit var calendarBinding: CalendarBinding
 
     private var schedule = mutableListOf<WeekLesson>()
-    private var attachedFiles: ArrayList<MutableMap<String, Any?>> = arrayListOf()
+    private var attachedFiles: ArrayList<MutableMap<String, String>> = arrayListOf()
     private var presentationMode = PresentationMode.WEEK
     private val days = mutableMapOf<Int, Button>()
 
@@ -59,12 +63,12 @@ class ApplicationCreatorActivity : AppCompatActivity() {
     private val calendar = Calendar.getInstance()
     private var currentMonth = calendar.get(Calendar.MONTH)
     private var currentYear = calendar.get(Calendar.YEAR)
-    private var dayOfWeek = if (calendar.get(Calendar.DAY_OF_WEEK) == 1) 7 else calendar.get(Calendar.DAY_OF_WEEK) - 1
+    private var dayOfWeek =
+        if (calendar.get(Calendar.DAY_OF_WEEK) == 1) 7 else calendar.get(Calendar.DAY_OF_WEEK) - 1
 
     private var differenceMonth: Int = 0
     private var differenceYear: Int = 0
 
-    // TODO: только при нажатии на кнопку сохранения все дни конвертируются в пары в список ниже
     private val selectedDaysList: MutableList<CalendarDay> = arrayListOf()
     private val selectedLessonsList: MutableList<WeekLesson> = arrayListOf()
 
@@ -357,10 +361,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
         }
     }
 
-    // TODO: Выполнить запрос на бэкенд для создания
     private fun createApplication() {
-
-        var resultList: List<LessonDto> = arrayListOf()
 
         val sortedDays =
             selectedDaysList.sortedWith(compareBy<CalendarDay> { it.year }.thenBy { it.month }
@@ -373,24 +374,33 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
         val dateFrom = getFirstDate(sortedDays, sortedLessons)
 
-        val dateTo = getLastDate(sortedDays, sortedLessons)
+        var dateTo = getLastDate(sortedDays, sortedLessons)
+        val tempCalendar = Calendar.getInstance()
+        tempCalendar.time = dateTo
+        tempCalendar.add(Calendar.DAY_OF_MONTH, 1)
+        dateTo = tempCalendar.time
 
         CoroutineScope(Dispatchers.IO).launch {
             val api = Network.scheduleApi
-            var response = api.getSchedule(
+            val response = api.getSchedule(
                 dateFrom = dateFormatter.format(dateFrom.toInstant()) + "T00:00:00Z",
                 dateTo = dateFormatter.format(dateTo.toInstant()) + "T00:00:00Z",
             )
 
-            response.body()?.let { lessons ->
-                resultList = filterLessons(lessons)
-            }
+            val preferences = getSharedPreferences("preferences", MODE_PRIVATE)
+            val token = preferences.getString("token", null)
 
-            val apiApplication = Network.applicationApi
-            response = apiApplication.createApplication(
-                lessons = Json.encodeToString(resultList),
-                files = Json.encodeToString(attachedFiles)
-            )
+            response.body()?.let { lessons ->
+                val resultList = filterLessons(lessons)
+                val apiApplication = Network.applicationApi
+                apiApplication.createApplication(
+                    "Bearer $token",
+                    NewApplicationRequestDto(
+                        lessons = resultList.map {"name: ${it.name}, startTime: ${it.startTime}, endTime: ${it.endTime}, id: ${it.id}"},
+                        files = attachedFiles.map { map -> AttachedFileDto(name = map["name"] ?: "", data = map["data"] ?: "") },
+                    )
+                )
+            }
         }
 
         finish()
@@ -410,7 +420,10 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             }
 
             val isLessonMatched = selectedLessonsList.any { weekLesson ->
-                weekLesson.year == lessonDate.year && weekLesson.month == lessonDate.monthValue && weekLesson.day == lessonDate.dayOfMonth
+                        weekLesson.year == lessonDate.year &&
+                        weekLesson.month == lessonDate.monthValue &&
+                        weekLesson.day == lessonDate.dayOfMonth &&
+                        weekLesson.timeSlot == getTimeSlot(lesson.startTime)
             }
 
             isDayMatched || isLessonMatched
@@ -421,15 +434,15 @@ class ApplicationCreatorActivity : AppCompatActivity() {
         val tempCalendar = Calendar.getInstance()
         var date1: Date = tempCalendar.time
         var date2: Date = tempCalendar.time
-        if(days.isNotEmpty()) {
+        if (days.isNotEmpty()) {
             tempCalendar.set(days.first().year, days.first().month - 1, days.first().day)
             date1 = tempCalendar.time
-            if(lessons.isEmpty()) return date1
+            if (lessons.isEmpty()) return date1
         }
         if (lessons.isNotEmpty()) {
             tempCalendar.set(lessons.first().year, lessons.first().month - 1, lessons.first().day)
             date2 = tempCalendar.time
-            if(days.isEmpty()) return date2
+            if (days.isEmpty()) return date2
         }
 
         return if (date1 < date2) date1 else date2
@@ -439,15 +452,15 @@ class ApplicationCreatorActivity : AppCompatActivity() {
         val tempCalendar = Calendar.getInstance()
         var date1: Date = tempCalendar.time
         var date2: Date = tempCalendar.time
-        if(days.isNotEmpty()) {
-            tempCalendar.set(days.first().year, days.first().month - 1, days.first().day)
+        if (days.isNotEmpty()) {
+            tempCalendar.set(days.last().year, days.last().month - 1, days.last().day)
             date1 = tempCalendar.time
-            if(lessons.isEmpty()) return date1
+            if (lessons.isEmpty()) return date1
         }
         if (lessons.isNotEmpty()) {
-            tempCalendar.set(lessons.first().year, lessons.first().month - 1, lessons.first().day)
+            tempCalendar.set(lessons.last().year, lessons.last().month - 1, lessons.last().day)
             date2 = tempCalendar.time
-            if(days.isEmpty()) return date2
+            if (days.isEmpty()) return date2
         }
 
         return if (date1 > date2) date1 else date2
@@ -483,7 +496,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
         }.forEach { lesson ->
 
             var selected = selectedLessonsList.find {
-                        it.year == lesson.year &&
+                it.year == lesson.year &&
                         it.month == lesson.month &&
                         it.day == lesson.day &&
                         it.timeSlot == lesson.timeSlot
@@ -567,35 +580,11 @@ class ApplicationCreatorActivity : AppCompatActivity() {
         }
     }
 
-    private fun getDay(date: String): Int {
-        return Integer.parseInt(date.substringAfterLast('-').substringBefore('T'))
-    }
-
-    private fun getMonth(date: String): Int {
-        return Integer.parseInt(date.substringBeforeLast('-').substringAfter('-'))
-    }
-
-    private fun getYear(date: String): Int {
-        return Integer.parseInt(date.substringBefore('-'))
-    }
-
-    private fun getTimeSlot(date: String): Int {
-        return when (date.substringAfter("T")) {
-            "08:45:00Z" -> 1
-            "10:35:00Z" -> 2
-            "12:25:00Z" -> 3
-            "14:45:00Z" -> 4
-            "16:35:00Z" -> 5
-            "18:25:00Z" -> 6
-            else -> 7
-        }
-    }
-
     // Обновить кнопку для сохранения
     private fun updateSaveButton() {
         val countOfSelectedLessons = selectedLessonsList.size + selectedDaysList.size
 
-        if (countOfSelectedLessons > 0) {
+        if (countOfSelectedLessons > 0 && attachedFiles.isNotEmpty()) {
             if (binding.save.isEnabled) return
 
             binding.save.setBackgroundResource(R.drawable.blue_button)
@@ -621,7 +610,8 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
             attachedFiles.add(
                 mutableMapOf(
-                    "name" to imageName, "data" to imageBase64
+                    "name" to (imageName ?: System.currentTimeMillis().toString()),
+                    "data" to imageBase64,
                 )
             )
 
@@ -655,6 +645,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             removeFileButton.setOnClickListener {
                 attachedFiles.removeIf { it["data"] == imageBase64 }
                 binding.attachedFiles.removeView(fileView)
+                updateSaveButton()
             }
 
             fileView.addView(fileNameView)
@@ -662,6 +653,8 @@ class ApplicationCreatorActivity : AppCompatActivity() {
 
             binding.attachedFiles.addView(fileView)
         }
+
+        updateSaveButton()
     }
 
     // Конвертация изображения в Base64

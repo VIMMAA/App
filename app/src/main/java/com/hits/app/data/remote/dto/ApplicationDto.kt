@@ -3,9 +3,8 @@ package com.hits.app.data.remote.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LessonDto(
+data class ApplicationDto (
     val id: String,
-    val name: String,
-    val startTime: String,
-    val endTime: String
+    val status: String,
+    val submissionDate: String
 )

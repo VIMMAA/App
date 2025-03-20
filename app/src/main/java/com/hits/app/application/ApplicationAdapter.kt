@@ -1,20 +1,25 @@
-package com.hits.app.request
+package com.hits.app.application
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
+import com.hits.app.ApplicationViewerActivity
 import com.hits.app.R
+import com.hits.app.data.remote.api.ApplicationApi
 import com.hits.app.databinding.ItemRequestBinding
 import java.time.format.DateTimeFormatter
 
 
-class RequestAdapter (
+class ApplicationAdapter (
     private val context: Context,
-    private val dataSource: ArrayList<RequestItem>
+    private val api: ApplicationApi,
+    private val dataSource: ArrayList<ApplicationItem>
 ) : BaseAdapter() {
 
     private val inflater: LayoutInflater =
@@ -46,7 +51,9 @@ class RequestAdapter (
         view.findViewById<TextView>(R.id.date).text = "Дата подачи $formattedDate"
 
         view.setOnClickListener {
-            dataSource.remove(item)
+            val intent = Intent(context, ApplicationViewerActivity::class.java)
+            intent.putExtra("id", item.id)
+            context.startActivity(intent)
 
             notifyDataSetChanged()
         }
