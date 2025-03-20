@@ -19,11 +19,14 @@ import com.hits.app.application.getDay
 import com.hits.app.application.getMonth
 import com.hits.app.application.getTimeSlot
 import com.hits.app.application.getYear
+import com.hits.app.application.updateLessonsSelections
 import com.hits.app.data.remote.Network
+import com.hits.app.data.remote.dto.ApplicationDto
 import com.hits.app.data.remote.dto.AttachedFileDto
 import com.hits.app.data.remote.dto.LessonDto
 import com.hits.app.data.remote.dto.NewApplicationRequestDto
 import com.hits.app.databinding.ActivityApplicationEditorBinding
+import com.hits.app.databinding.AttachedFileEditItemBinding
 import com.hits.app.databinding.CalendarBinding
 import com.hits.app.utils.CalendarDay
 import com.hits.app.utils.WeekCalculator
@@ -32,6 +35,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.ZoneId
@@ -45,7 +49,7 @@ class ApplicationEditorActivity : AppCompatActivity() {
     private lateinit var calendarBinding: CalendarBinding
 
     private var schedule = mutableListOf<WeekLesson>()
-    private var attachedFiles: ArrayList<MutableMap<String, String>> = arrayListOf()
+    private var attachedFiles = arrayListOf<MutableMap<String, String>>()
     private var presentationMode = PresentationMode.WEEK
     private val days = mutableMapOf<Int, Button>()
     private lateinit var id: String
@@ -85,6 +89,7 @@ class ApplicationEditorActivity : AppCompatActivity() {
 
         id = intent.getStringExtra("id").toString()
 
+        updateApplication()
         updateSchedule()
 
         binding.back.setOnClickListener {
@@ -228,7 +233,6 @@ class ApplicationEditorActivity : AppCompatActivity() {
             button.setBackgroundResource(R.color.transparent)
             selectedDaysList.removeIf { it.year == currentYear && it.month == currentMonth && it.day.toString() == button.text.toString() }
         }
-        updateSaveButton()
     }
 
     private fun countDayOfWeek(day: Int): Int {
@@ -263,6 +267,7 @@ class ApplicationEditorActivity : AppCompatActivity() {
 
             setMonthDifference()
             setMonth()
+            switchMonthView()
         }
     }
 
@@ -371,6 +376,54 @@ class ApplicationEditorActivity : AppCompatActivity() {
                 selectDay(dayOfWeek)
             }
         }
+    }
+
+    private fun updateApplication() {
+        val preferences = getSharedPreferences("preferences", MODE_PRIVATE)
+        val token = preferences.getString("token", null)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val api = Network.applicationApi
+            val response = api.getApplication(
+                "Bearer $token",
+                id
+            )
+
+            withContext(Dispatchers.Main) {
+                attachedFiles = (response.body()?.attachedFiles?.map {
+                    mutableMapOf(
+                        "name" to it.name,
+                        "data" to it.data,
+                    )
+                } ?: emptyList()) as ArrayList<MutableMap<String, String>>
+
+                updateData(response)
+            }
+        }
+    }
+
+    private fun updateData(response: Response<ApplicationDto>) {
+
+        updateLessonsSelections(
+            resources = resources,
+            packageName = packageName,
+            selectedLessons = response.body()!!.lessons,
+            highlightedLessonsInWeek = selectedLessonsList,
+            highlightedDaysInMonth = selectedDaysList,
+        )
+
+        attachedFiles.forEach { it ->
+            val fileView =
+                AttachedFileEditItemBinding.inflate(layoutInflater, binding.attachedFiles, true)
+
+            fileView.removeAttachedFile.setOnClickListener { it1 ->
+                attachedFiles.remove(it)
+                binding.attachedFiles.removeView(fileView.root)
+            }
+            fileView.attachedFileName.text = it["name"] as String
+        }
+
+        selectDay(dayOfWeek)
     }
 
     private fun saveEditedApplication() {
@@ -489,8 +542,6 @@ class ApplicationEditorActivity : AppCompatActivity() {
         val endOfWeek = weekCalculator.getEndOfWeek()
 
         binding.week.text = "$startOfWeek - $endOfWeek"
-
-        updateSaveButton()
     }
 
     // Выбрать день
@@ -565,58 +616,15 @@ class ApplicationEditorActivity : AppCompatActivity() {
                     subjectView.setCardBackgroundColor(getColor(R.color.blue))
                     selectedLessonsList.add(lesson)
                 }
-                updateSaveButton()
             }
 
             subjectView.addView(subjectNameView)
             subjectView.addView(subjectOrderView)
 
-            //TODO: окна между парами
-//            if (order > 1) {
-//                val time1 = Instant.parse(lesson.startTime)
-//                val time2 = Instant.parse(prev!!.endTime)
-//
-//                // Если разница во времени больше чем 45 минут, то был перерыв
-//                if (time1.toEpochMilli() - time2.toEpochMilli() > 1000 * 60 * 45) {
-//                    val boundView = TextView(binding.subjects.context)
-//
-//                    val t1 = formatter.format(time2)
-//                    val t2 = formatter.format(time1)
-//
-//                    boundView.layoutParams = binding.bound.layoutParams
-//                    boundView.setBackgroundResource(R.color.transparent)
-//                    boundView.gravity = Gravity.CENTER
-//                    boundView.text = "$t1 - $t2 • перерыв"
-//                    boundView.setTextColor(getColor(R.color.grey_faded))
-//
-//                    binding.subjects.addView(boundView)
-//                }
-//            }
-
             binding.subjects.addView(subjectView)
         }
     }
 
-    // Обновить кнопку для сохранения
-    private fun updateSaveButton() {
-        val countOfSelectedLessons = selectedLessonsList.size + selectedDaysList.size
-
-        if (countOfSelectedLessons > 0 && attachedFiles.isNotEmpty()) {
-            if (binding.save.isEnabled) return
-
-            binding.save.setBackgroundResource(R.drawable.blue_button)
-            binding.save.isEnabled = true
-            binding.save.setTextColor(getColor(R.color.white))
-
-            return
-        }
-
-        if (!binding.save.isEnabled) return
-
-        binding.save.setBackgroundResource(R.drawable.grey_button)
-        binding.save.isEnabled = false
-        binding.save.setTextColor(getColor(R.color.grey_faded))
-    }
 
     private fun attachImage(uri: Uri) {
         val imagePath = getRealPathFromURI(uri)
@@ -662,7 +670,6 @@ class ApplicationEditorActivity : AppCompatActivity() {
             removeFileButton.setOnClickListener {
                 attachedFiles.removeIf { it["data"] == imageBase64 }
                 binding.attachedFiles.removeView(fileView)
-                updateSaveButton()
             }
 
             fileView.addView(fileNameView)
@@ -670,8 +677,6 @@ class ApplicationEditorActivity : AppCompatActivity() {
 
             binding.attachedFiles.addView(fileView)
         }
-
-        updateSaveButton()
     }
 
     // Конвертация изображения в Base64
