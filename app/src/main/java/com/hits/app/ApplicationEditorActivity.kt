@@ -11,6 +11,7 @@ import android.view.ContextThemeWrapper
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -163,7 +164,8 @@ class ApplicationEditorActivity : AppCompatActivity() {
         binding.attachedFiles.removeAllViews()
 
         binding.save.setOnClickListener {
-            saveEditedApplication()
+            if (attachedFiles.isNotEmpty()) saveEditedApplication()
+            else Toast.makeText(this, "Choose files", Toast.LENGTH_SHORT).show()
         }
 
         updateWeek()
@@ -470,6 +472,7 @@ class ApplicationEditorActivity : AppCompatActivity() {
                         },
                     )
                 )
+
             }
         }
 
