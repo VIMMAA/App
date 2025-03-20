@@ -14,6 +14,7 @@ import com.hits.app.application.updateLessonsSelections
 import com.hits.app.data.remote.Network
 import com.hits.app.data.remote.dto.ApplicationDto
 import com.hits.app.databinding.ActivityApplicationViewerBinding
+import com.hits.app.databinding.AttachedFileItemBinding
 import com.hits.app.databinding.CalendarBinding
 import com.hits.app.utils.CalendarDay
 import com.hits.app.utils.WeekCalculator
@@ -28,14 +29,13 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
-import java.util.UUID
 
 class ApplicationViewerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityApplicationViewerBinding
     private lateinit var calendarBinding: CalendarBinding
 
     private var schedule = mutableListOf<WeekLesson>()
-    private var attachedFiles: ArrayList<MutableMap<String, String>> = arrayListOf()
+    private var attachedFiles = emptyList<MutableMap<String, String>>()
     private var presentationMode = PresentationMode.WEEK
     private val days = mutableMapOf<Int, Button>()
     lateinit var id: String
@@ -69,6 +69,7 @@ class ApplicationViewerActivity : AppCompatActivity() {
 
         binding = ActivityApplicationViewerBinding.inflate(layoutInflater)
         calendarBinding = CalendarBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
         updateApplication()
@@ -150,20 +151,16 @@ class ApplicationViewerActivity : AppCompatActivity() {
             )
 
             withContext(Dispatchers.Main) {
-                updateData(response)
+                attachedFiles = response.body()?.attachedFiles?.map {
+                    mutableMapOf(
+                        "name" to it.name,
+                        "data" to it.data,
+                    )
+                } ?: emptyList()
 
-                response.body()?.attachedFiles
+                updateData(response)
             }
         }
-
-        // разложить по полочкам lessons и attachedFiles
-
-        attachedFiles = arrayListOf(
-            mutableMapOf(
-                "name" to "turnir",
-                "data" to UUID.randomUUID().toString() // Сюда положить fileId
-            )
-        )
     }
 
     private fun updateSchedule() {
@@ -240,28 +237,13 @@ class ApplicationViewerActivity : AppCompatActivity() {
             else -> "На проверке"
         }
 
-        // update attachedFiles
 
-        /*attachedFiles.forEach {
-            // Файл
-            val fileView = CardView(binding.attachedFiles.context)
+        attachedFiles.forEach {
+            val fileView =
+                AttachedFileItemBinding.inflate(layoutInflater, binding.attachedFiles, true)
 
-            fileView.layoutParams = binding.attachedFile.layoutParams
-            fileView.setCardBackgroundColor(getColor(R.color.light_grey))
-            fileView.radius = 8f
-
-            // Название файла
-            val fileNameView = TextView(fileView.context)
-
-            fileNameView.layoutParams = binding.attachedFileName.layoutParams
-            fileNameView.setBackgroundResource(R.color.transparent)
-            fileNameView.text = it["name"] as String
-            fileNameView.setTextColor(getColor(R.color.white))
-
-            fileView.addView(fileNameView)
-
-            binding.attachedFiles.addView(fileView)
-        }*/
+            fileView.attachedFileName.text = it["name"] as String
+        }
 
         selectDay(dayOfWeek)
     }
