@@ -1,7 +1,6 @@
 package com.hits.app
 
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -152,6 +151,8 @@ class ApplicationViewerActivity : AppCompatActivity() {
 
             withContext(Dispatchers.Main) {
                 updateData(response)
+
+                response.body()?.attachedFiles
             }
         }
 
@@ -314,62 +315,16 @@ class ApplicationViewerActivity : AppCompatActivity() {
             subjectOrderView.text = "${lesson.timeSlot}-ая пара"
             subjectOrderView.setTextColor(getColor(R.color.grey_faded))
 
-            subjectView.setOnClickListener {
-                selected = selectedLessonsList.find {
-                    it.year == lesson.year &&
-                            it.month == lesson.month &&
-                            it.day == lesson.day &&
-                            it.timeSlot == lesson.timeSlot
-                }?.selected
-
-                lesson.selected = selected != true
-
-                if (lesson.selected == false) {
-                    subjectView.setCardBackgroundColor(getColor(R.color.dark_grey))
-                    selectedLessonsList.removeIf {
-                        it.year == lesson.year &&
-                                it.month == lesson.month &&
-                                it.day == lesson.day &&
-                                it.timeSlot == lesson.timeSlot
-                    }
-                } else {
-                    subjectView.setCardBackgroundColor(getColor(R.color.blue))
-                    selectedLessonsList.add(lesson)
-                }
-            }
-
             subjectView.addView(subjectNameView)
             subjectView.addView(subjectOrderView)
-
-            //TODO: окна между парами
-//            if (order > 1) {
-//                val time1 = Instant.parse(lesson.startTime)
-//                val time2 = Instant.parse(prev!!.endTime)
-//
-//                // Если разница во времени больше чем 45 минут, то был перерыв
-//                if (time1.toEpochMilli() - time2.toEpochMilli() > 1000 * 60 * 45) {
-//                    val boundView = TextView(binding.subjects.context)
-//
-//                    val t1 = formatter.format(time2)
-//                    val t2 = formatter.format(time1)
-//
-//                    boundView.layoutParams = binding.bound.layoutParams
-//                    boundView.setBackgroundResource(R.color.transparent)
-//                    boundView.gravity = Gravity.CENTER
-//                    boundView.text = "$t1 - $t2 • перерыв"
-//                    boundView.setTextColor(getColor(R.color.grey_faded))
-//
-//                    binding.subjects.addView(boundView)
-//                }
-//            }
 
             binding.subjects.addView(subjectView)
         }
     }
 
     private fun switchToMonthMode() {
-        if (presentationMode == ApplicationViewerActivity.PresentationMode.WEEK) {
-            presentationMode = ApplicationViewerActivity.PresentationMode.MONTH
+        if (presentationMode == PresentationMode.WEEK) {
+            presentationMode = PresentationMode.MONTH
 
             binding.calendar7.setBackgroundResource(R.drawable.blue_button)
             days.values.forEach {
@@ -384,6 +339,7 @@ class ApplicationViewerActivity : AppCompatActivity() {
 
             setMonthDifference()
             setMonth()
+            switchMonthView()
         }
     }
 
@@ -462,7 +418,6 @@ class ApplicationViewerActivity : AppCompatActivity() {
 
             // Устанавливаем цвет текста в зависимости от месяца
             if (day in currentMonthDays) {
-                button.setOnClickListener() { clickOnDay(button) }
                 button.text = day.toString()
                 button.setTextColor(getColor(R.color.white))
                 button.isEnabled = true
@@ -476,22 +431,6 @@ class ApplicationViewerActivity : AppCompatActivity() {
         }
 
         binding.weekText.text = getCurrentMonthName(currentMonth)
-    }
-
-    private fun clickOnDay(button: Button) {
-        if (button.background is ColorDrawable) {
-            button.setBackgroundResource(R.drawable.blue_button)
-            val day = CalendarDay(
-                currentYear,
-                currentMonth,
-                Integer.parseInt(button.text.toString()),
-                resources.getResourceName(button.id).substringAfterLast("/")
-            )
-            selectedDaysList.add(day)
-        } else {
-            button.setBackgroundResource(R.color.transparent)
-            selectedDaysList.removeIf { it.year == currentYear && it.month == currentMonth && it.day.toString() == button.text.toString() }
-        }
     }
 
     private fun countDayOfWeek(day: Int): Int {
@@ -521,8 +460,8 @@ class ApplicationViewerActivity : AppCompatActivity() {
     }
 
     private fun switchToWeekMode() {
-        if (presentationMode == ApplicationViewerActivity.PresentationMode.MONTH) {
-            presentationMode = ApplicationViewerActivity.PresentationMode.WEEK
+        if (presentationMode == PresentationMode.MONTH) {
+            presentationMode = PresentationMode.WEEK
             binding.calendarContainer.removeView(calendarBinding.calendarContainer)
             binding.calendarContainer.addView(binding.subjects, 0)
 

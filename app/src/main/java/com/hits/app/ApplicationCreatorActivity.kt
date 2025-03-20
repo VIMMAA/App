@@ -394,8 +394,13 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                 apiApplication.createApplication(
                     "Bearer $token",
                     NewApplicationRequestDto(
-                        lessons = resultList.map {"name: ${it.name}, startTime: ${it.startTime}, endTime: ${it.endTime}, id: ${it.id}"},
-                        files = attachedFiles.map { map -> AttachedFileDto(name = map["name"] ?: "", data = map["data"] ?: "") },
+                        lessons = resultList.map { it.id },
+                        files = attachedFiles.map { map ->
+                            AttachedFileDto(
+                                name = map["name"] ?: "",
+                                data = map["data"] ?: ""
+                            )
+                        },
                     )
                 )
             }
@@ -418,7 +423,7 @@ class ApplicationCreatorActivity : AppCompatActivity() {
             }
 
             val isLessonMatched = selectedLessonsList.any { weekLesson ->
-                        weekLesson.year == lessonDate.year &&
+                weekLesson.year == lessonDate.year &&
                         weekLesson.month == lessonDate.monthValue &&
                         weekLesson.day == lessonDate.dayOfMonth &&
                         weekLesson.timeSlot == getTimeSlot(lesson.startTime)

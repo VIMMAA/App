@@ -408,7 +408,7 @@ class ApplicationEditorActivity : AppCompatActivity() {
                 apiApplication.editApplication(
                     "Bearer $token", id,
                     NewApplicationRequestDto(
-                        lessons = resultList.map { "name: ${it.name}, startTime: ${it.startTime}, endTime: ${it.endTime}, id: ${it.id}" },
+                        lessons = resultList.map { it.id },
                         files = attachedFiles.map { map ->
                             AttachedFileDto(
                                 name = map["name"] ?: "",
