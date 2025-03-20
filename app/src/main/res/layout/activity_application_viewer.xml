@@ -36,35 +36,13 @@
             app:layout_constraintTop_toBottomOf="@+id/attached_files">
 
           <Button
-              android:id="@+id/delete"
-              android:layout_width="0dp"
-              android:layout_height="60dp"
+              android:id="@+id/edit"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
               android:layout_marginTop="20dp"
-              android:layout_weight="1"
-              android:background="@drawable/red_button"
-              android:fontFamily="@font/manrope_bold"
-              android:text="@string/delete"
-              android:textAllCaps="false"
-              android:textColor="@color/white"
-              android:theme="@style/CustomButton"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent" />
-
-          <Space
-              android:layout_width="8dp"
-              android:layout_height="wrap_content" />
-
-          <Button
-              android:id="@+id/save"
-              android:layout_width="0dp"
-              android:layout_height="60dp"
-              android:layout_marginTop="20dp"
-              android:layout_weight="1"
               android:background="@drawable/blue_button"
               android:fontFamily="@font/manrope_bold"
-              android:text="@string/save"
+              android:text="@string/edit"
               android:textAllCaps="false"
               android:textColor="@color/white"
               android:theme="@style/CustomButton"
@@ -85,11 +63,11 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/application_editor"
+            android:id="@+id/application_viewer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/manrope_bold"
-            android:text="@string/application_editor"
+            android:text="@string/application"
             android:textColor="@color/white"
             android:textSize="22sp"
             app:layout_constraintTop_toTopOf="@+id/back"
@@ -103,11 +81,11 @@
             android:layout_height="40dp"
             app:cardBackgroundColor="@color/light_grey"
             app:cardCornerRadius="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/back"
+            app:layout_constraintTop_toBottomOf="@+id/application_info_title"
+            android:layout_marginTop="8dp"
             android:id="@+id/submission_date_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"
             android:background="@color/transparent">
 
           <androidx.constraintlayout.widget.ConstraintLayout
@@ -115,43 +93,113 @@
               android:layout_height="match_parent"
               android:background="@color/transparent">
 
-            <ImageButton
-                android:id="@+id/right"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/grey_button"
-                android:src="@drawable/back_arrow"
-                android:theme="@style/CustomButton"
-                app:layout_constraintTop_toTopOf="parent"
+            <androidx.cardview.widget.CardView
+                android:layout_width="100dp"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginRight="4dp"
-                android:rotation="180" />
+                android:layout_marginEnd="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                app:cardBackgroundColor="@color/prefix_waiting"
+                android:id="@+id/prefix"
+                app:cardCornerRadius="4dp"
+                android:background="@color/transparent">
 
-            <ImageButton
-                android:id="@+id/left"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/grey_button"
-                android:src="@drawable/back_arrow"
-                android:theme="@style/CustomButton"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginLeft="4dp" />
+              <TextView
+                  android:text="@string/prefix_waiting"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/prefix_text"
+                  android:textColor="@color/white"
+                  android:gravity="center"
+                  android:background="@color/transparent" />
+            </androidx.cardview.widget.CardView>
 
             <TextView
-                android:text="@string/week_example"
+                android:text="@string/submission_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/week"
+                android:id="@+id/submission_date_title"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
                 android:background="@color/transparent" />
+
+            <TextView
+                android:text="@string/submission_date_example"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/submission_date"
+                app:layout_constraintTop_toTopOf="@+id/submission_date_title"
+                app:layout_constraintBottom_toBottomOf="@+id/submission_date_title"
+                app:layout_constraintStart_toEndOf="@+id/submission_date_title"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/white"
+                android:background="@color/transparent" />
+          </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/week_card"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/transparent"
+            app:cardBackgroundColor="@color/light_grey"
+            app:cardCornerRadius="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/submission_date_card">
+
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/week"
+              android:background="@color/transparent">
+
+            <ImageButton
+                android:id="@+id/right"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/grey_button"
+                android:rotation="180"
+                android:src="@drawable/back_arrow"
+                android:theme="@style/CustomButton"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/left"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/grey_button"
+                android:src="@drawable/back_arrow"
+                android:theme="@style/CustomButton"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/weekText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="@string/week_example"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
           </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -159,34 +207,35 @@
 
         <TextView
             android:text="@string/attached_files"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/attached_files_title"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendar_container"
             android:layout_marginTop="16dp"
             android:background="@color/transparent" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/calendar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/light_grey"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:cardCornerRadius="8dp"
-            android:id="@+id/calendar_container"
-            app:layout_constraintTop_toBottomOf="@+id/submission_date_card"
             android:layout_marginTop="16dp"
-            android:background="@color/transparent">
+            android:background="@color/transparent"
+            app:cardBackgroundColor="@color/light_grey"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/week_card">
 
           <LinearLayout
-              android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="60dp"
               android:background="@color/dark_grey"
-              android:gravity="center">
+              android:gravity="center"
+              android:orientation="horizontal">
 
             <Space
                 android:layout_width="wrap_content"
@@ -194,21 +243,21 @@
                 android:layout_weight="1" />
 
             <Button
-                android:text="@string/calendar_1"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
                 android:id="@+id/calendar_1"
-                android:textColor="@color/white"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@color/transparent"
+                android:gravity="center"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:gravity="center"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:background="@color/transparent"
-                android:theme="@style/CustomButton"
-                android:textSize="12sp" />
+                android:text="@string/calendar_1"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:theme="@style/CustomButton" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -216,20 +265,20 @@
                 android:layout_weight="1" />
 
             <Button
-                android:text="@string/calendar_2"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
                 android:id="@+id/calendar_2"
-                android:textColor="@color/white"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@color/transparent"
+                android:gravity="center"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:gravity="center"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
+                android:text="@string/calendar_2"
+                android:textColor="@color/white"
                 android:textSize="12sp"
-                android:background="@color/transparent"
                 android:theme="@style/CustomButton" />
 
             <Space
@@ -238,42 +287,20 @@
                 android:layout_weight="1" />
 
             <Button
-                android:layout_width="30dp"
-                android:layout_height="30dp"
                 android:id="@+id/calendar_3"
-                android:textColor="@color/white"
-                android:paddingLeft="0dp"
-                android:paddingTop="0dp"
-                android:paddingRight="0dp"
-                android:paddingBottom="0dp"
-                android:gravity="center"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:textSize="12sp"
-                android:text="@string/calendar_3"
-                android:theme="@style/CustomButton"
-                android:background="@color/transparent" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:id="@+id/calendar_4"
-                android:textColor="@color/white"
+                android:background="@color/transparent"
+                android:gravity="center"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:gravity="center"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
+                android:text="@string/calendar_3"
+                android:textColor="@color/white"
                 android:textSize="12sp"
-                android:text="@string/calendar_4"
-                android:background="@color/transparent"
                 android:theme="@style/CustomButton" />
 
             <Space
@@ -282,21 +309,21 @@
                 android:layout_weight="1" />
 
             <Button
+                android:id="@+id/calendar_4"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:id="@+id/calendar_5"
-                android:textColor="@color/white"
+                android:background="@color/transparent"
+                android:gravity="center"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:gravity="center"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
+                android:text="@string/calendar_4"
+                android:textColor="@color/white"
                 android:textSize="12sp"
-                android:text="@string/calendar_5"
-                android:theme="@style/CustomButton"
-                android:background="@color/transparent" />
+                android:theme="@style/CustomButton" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -304,21 +331,43 @@
                 android:layout_weight="1" />
 
             <Button
+                android:id="@+id/calendar_5"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:id="@+id/calendar_6"
-                android:textColor="@color/white"
+                android:background="@color/transparent"
+                android:gravity="center"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingBottom="0dp"
-                android:gravity="center"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
+                android:text="@string/calendar_5"
+                android:textColor="@color/white"
                 android:textSize="12sp"
+                android:theme="@style/CustomButton" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/calendar_6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@color/transparent"
+                android:gravity="center"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingLeft="0dp"
+                android:paddingTop="0dp"
+                android:paddingRight="0dp"
+                android:paddingBottom="0dp"
                 android:text="@string/calendar_6"
-                android:theme="@style/CustomButton"
-                android:background="@color/transparent" />
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:theme="@style/CustomButton" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -332,8 +381,8 @@
                 android:background="@drawable/grey_button"
                 android:src="@drawable/calendar_icon"
                 android:theme="@style/CustomButton"
-                tools:layout_editor_absoluteY="199dp"
-                tools:layout_editor_absoluteX="-20dp" />
+                tools:layout_editor_absoluteX="-20dp"
+                tools:layout_editor_absoluteY="199dp" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -343,59 +392,72 @@
           </LinearLayout>
 
           <LinearLayout
-              android:orientation="vertical"
+              android:id="@+id/subjects"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginTop="60dp"
+              android:background="@color/transparent"
+              android:orientation="vertical"
               android:paddingHorizontal="4dp"
-              android:paddingVertical="4dp"
-              android:id="@+id/subjects"
-              android:background="@color/transparent">
+              android:paddingVertical="4dp">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/subject"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="@color/dark_grey"
                 android:layout_margin="4dp"
-                android:id="@+id/subject"
-                android:background="@color/transparent">
+                android:background="@color/transparent"
+                app:cardBackgroundColor="@color/dark_grey"
+                app:cardCornerRadius="8dp">
 
               <TextView
-                  android:text="@string/subject_example_1"
+                  android:id="@+id/subject_name"
                   android:layout_width="240dp"
                   android:layout_height="wrap_content"
-                  android:id="@+id/subject_name"
-                  android:textColor="@color/white"
+                  android:layout_gravity="center|left"
                   android:layout_marginLeft="16dp"
                   android:background="@color/transparent"
-                  android:layout_gravity="center|left" />
+                  android:text="@string/subject_example_1"
+                  android:textColor="@color/white" />
 
               <TextView
-                  android:text="1-ая пара"
+                  android:id="@+id/subject_order"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:id="@+id/subject_order"
-                  android:textColor="@color/grey_faded"
-                  android:gravity="right"
+                  android:layout_gravity="center|right"
                   android:layout_marginRight="16dp"
                   android:background="@color/transparent"
-                  android:layout_gravity="center|right" />
+                  android:gravity="right"
+                  android:text="1-ая пара"
+                  android:textColor="@color/grey_faded" />
 
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:text="@string/bound_example"
+                android:id="@+id/bound"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:id="@+id/bound"
                 android:layout_margin="6dp"
+                android:background="@color/transparent"
                 android:gravity="center"
-                android:textColor="@color/grey_faded"
-                android:background="@color/transparent" />
+                android:text="@string/bound_example"
+                android:textColor="@color/grey_faded" />
 
           </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:text="@string/application_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/application_info_title"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/back"
+            android:layout_marginTop="16dp"
+            android:background="@color/transparent" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -407,52 +469,8 @@
             android:id="@+id/attached_files"
             android:background="@color/transparent">
 
-          <androidx.cardview.widget.CardView
-              android:layout_width="match_parent"
-              android:layout_height="40dp"
-              app:cardBackgroundColor="@color/light_grey"
-              app:cardCornerRadius="8dp"
-              android:layout_marginTop="8dp"
-              android:id="@+id/attached_file"
-              android:background="@color/transparent">
-
-            <ImageButton
-                android:id="@+id/remove_attached_file"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/grey_button"
-                android:src="@drawable/cross_icon"
-                android:theme="@style/CustomButton"
-                android:layout_gravity="right"
-                android:layout_marginRight="4dp" />
-
-            <TextView
-                android:text="@string/attached_file_example_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/attached_file_name"
-                android:textColor="@color/white"
-                android:layout_marginLeft="16dp"
-                android:background="@color/transparent"
-                android:layout_gravity="center|left" />
-          </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-        <Button
-            android:text="@string/add"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:id="@+id/add"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:textAllCaps="false"
-            app:layout_constraintTop_toTopOf="@+id/attached_files_title"
-            app:layout_constraintBottom_toBottomOf="@+id/attached_files_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/transparent"
-            android:textColor="@color/white" />
       </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

@@ -26,7 +26,7 @@
     <string name="additional_comments">Дополнительные комментарии</string>
     <string name="submission_date">Дата подачи</string>
     <string name="name_example">Иванов Иван</string>
-    <string name="submission_date_example">23.02.2025</string>
+    <string name="submission_date_example">21.03.2025</string>
     <string name="subject_example_1">ОКР</string>
     <string name="subject_example_2">Физкультура</string>
     <string name="subject_example_3">Английский язык</string>
@@ -39,7 +39,7 @@
     <string name="attached_file_example_1">Turnir_gorodskoy_po_shahmatam_2025</string>
     <string name="attached_file_example_2">Spravka_o_bolesni№553</string>
     <string name="additional_comments_example">Вы неверно указали срок действия справки. Переподайте заявку.\nЭто было не просто смело...</string>
-    <string name="week_example">24 февраля - 02 марта</string>
+    <string name="week_example">24 февраля - 2 марта</string>
     <string name="prefix_waiting">На проверке</string>
     <string name="prefix_approved">Одобрена</string>
     <string name="prefix_rejected">Отклонена</string>
@@ -51,5 +51,12 @@
     <string name="calendar_6">СБ</string>
     <string name="createReq">Создать заявку</string>
     <string name="listReq">Список заявок</string>
+    <string name="placeholder">Введите комментарий</string>
+    <string name="nothing">Ничего нет</string>
     <string name="advertisement">Здесь могла быть ваша реклама</string>
+    <string name="check">На проверке</string>
+    <string name="req">Заявка №</string>
+    <string name="date">Дата подачи</string>
+    <string name="month_example">Март</string>
+    <string name="comments_example">Все фигня. Давай по-новой</string>
 </resources>

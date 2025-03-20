@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/light_grey"
+    app:cardCornerRadius="8dp"
+    android:layout_marginTop="8dp"
+    android:id="@+id/attached_file"
+    android:background="@color/transparent">
+
+    <ImageButton
+        android:id="@+id/remove_attached_file"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/grey_button"
+        android:src="@drawable/cross_icon"
+        android:theme="@style/CustomButton"
+        android:layout_gravity="right"
+        android:layout_marginRight="4dp" />
+
+    <TextView
+        android:text="@string/attached_file_example_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/attached_file_name"
+        android:textColor="@color/white"
+        android:layout_marginLeft="16dp"
+        android:background="@color/transparent"
+        android:layout_gravity="center|left" />
+</androidx.cardview.widget.CardView>

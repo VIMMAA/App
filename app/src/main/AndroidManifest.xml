@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/first"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/first"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App.Starting">
+        android:theme="@style/CustomTheme">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -23,27 +24,52 @@
         <activity
             android:name=".SignActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight"
+            android:windowSoftInputMode="adjustResize"
             android:fitsSystemWindows="true">
         </activity>
         <activity
             android:name=".SignupActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight"
+            android:windowSoftInputMode="adjustResize"
             android:fitsSystemWindows="true">
         </activity>
         <activity
             android:name=".WelcomeActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight"
             android:fitsSystemWindows="true">
         </activity>
         <activity
             android:name=".FeedActivity"
+            android:exported="true"
+            android:fitsSystemWindows="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".ProfileActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight"
             android:fitsSystemWindows="true">
         </activity>
+        <activity
+            android:name=".ApplicationViewerActivity"
+            android:exported="false"
+            android:fitsSystemWindows="true">
+        </activity>
+        <activity
+            android:name=".ApplicationEditorActivity"
+            android:exported="false"
+            android:fitsSystemWindows="true">
+        </activity>
+        <activity
+            android:name=".ApplicationCreatorActivity"
+            android:exported="true"
+            android:fitsSystemWindows="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
     </application>
-
 </manifest>
