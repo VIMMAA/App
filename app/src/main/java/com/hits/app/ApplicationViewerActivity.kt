@@ -7,13 +7,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import com.hits.app.application.getApplicationInfo
 import com.hits.app.application.getDay
 import com.hits.app.application.getMonth
 import com.hits.app.application.getTimeSlot
 import com.hits.app.application.getYear
+import com.hits.app.application.updateLessonsSelections
 import com.hits.app.data.remote.Network
-import com.hits.app.data.remote.dto.ApplicationGetResponseDto
+import com.hits.app.data.remote.dto.ApplicationDto
 import com.hits.app.databinding.ActivityApplicationViewerBinding
 import com.hits.app.databinding.CalendarBinding
 import com.hits.app.utils.CalendarDay
@@ -58,8 +58,8 @@ class ApplicationViewerActivity : AppCompatActivity() {
     private var differenceMonth: Int = 0
     private var differenceYear: Int = 0
 
-    private val selectedDaysList: MutableList<CalendarDay> = arrayListOf()
-    private var selectedLessonsList: MutableList<WeekLesson> = arrayListOf()
+    private val selectedDaysList = mutableListOf<CalendarDay>()
+    private val selectedLessonsList = mutableListOf<WeekLesson>()
 
     private enum class PresentationMode { WEEK, MONTH }
 
@@ -204,11 +204,18 @@ class ApplicationViewerActivity : AppCompatActivity() {
     }
 
     // Установить основные данные
-    private fun updateData(response: Response<ApplicationGetResponseDto>) {
+    private fun updateData(response: Response<ApplicationDto>) {
         val extraFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             .withZone(ZoneId.systemDefault())
 
-        selectedLessonsList = getApplicationInfo(response.body()?.lessons)
+        updateLessonsSelections(
+            resources = resources,
+            packageName = packageName,
+            selectedLessons = response.body()!!.lessons,
+            highlightedLessonsInWeek = selectedLessonsList,
+            highlightedDaysInMonth = selectedDaysList,
+        )
+
         val timeInstant = Instant.parse(response.body()?.submissionDate)
         val submissionDate = extraFormatter.format(timeInstant)
         val status = response.body()?.status

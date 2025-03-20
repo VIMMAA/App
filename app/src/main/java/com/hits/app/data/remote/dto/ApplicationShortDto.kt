@@ -3,7 +3,8 @@ package com.hits.app.data.remote.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApplicationResponseDto (
+data class ApplicationShortDto(
+    val id: String,
     val status: String,
-    val message: String,
+    val submissionDate: String,
 )

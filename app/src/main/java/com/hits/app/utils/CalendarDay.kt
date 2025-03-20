@@ -1,8 +1,6 @@
 package com.hits.app.utils
 
-import java.util.Date
-
-class CalendarDay (
+class CalendarDay(
     val year: Int,
     val month: Int,
     val day: Int,

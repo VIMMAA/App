@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/calendar_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -30,21 +29,21 @@
                     android:layout_weight="1" />
 
                 <Button
-                    android:text=""
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
                     android:id="@+id/day_1"
-                    android:textColor="@color/white"
+                    android:layout_width="26dp"
+                    android:layout_height="30dp"
+                    android:background="@color/transparent"
+                    android:gravity="center"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
                     android:paddingLeft="0dp"
                     android:paddingTop="0dp"
                     android:paddingRight="0dp"
                     android:paddingBottom="0dp"
-                    android:gravity="center"
-                    android:minHeight="0dp"
-                    android:minWidth="0dp"
-                    android:theme="@style/CustomButton"
-                    android:background="@color/transparent"
-                    android:textSize="12sp" />
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:theme="@style/CustomButton" />
 
                 <Space
                     android:layout_width="wrap_content"

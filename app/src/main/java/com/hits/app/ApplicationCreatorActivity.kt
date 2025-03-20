@@ -399,9 +399,9 @@ class ApplicationCreatorActivity : AppCompatActivity() {
                     )
                 )
             }
-        }
 
-        finish()
+            finish()
+        }
     }
 
     private fun filterLessons(resultList: List<LessonDto>): List<LessonDto> {
