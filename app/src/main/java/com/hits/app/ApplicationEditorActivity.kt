@@ -153,9 +153,9 @@ class ApplicationEditorActivity : AppCompatActivity() {
         val button = days[dayOfWeek]
         button?.setBackgroundResource(R.drawable.blue_button)
 
-        binding.calendar7.setOnClickListener {
-            switchToMonthMode()
-        }
+//        binding.calendar7.setOnClickListener {
+//            switchToMonthMode()
+//        }
 
         binding.add.setOnClickListener {
             pickImageLauncher.launch("image/*")
