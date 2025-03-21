@@ -1,19 +1,10 @@
 package com.hits.app.application
 
 import android.content.res.Resources
-import com.hits.app.data.remote.Network
 import com.hits.app.data.remote.dto.LessonDto
 import com.hits.app.utils.CalendarDay
 import com.hits.app.utils.WeekLesson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 
 data class MyDate(
@@ -48,7 +39,7 @@ fun updateLessonsSelections(
     highlightedLessonsInWeek: MutableList<WeekLesson>,
     highlightedDaysInMonth: MutableList<CalendarDay>,
 ) {
-    val dateFormatter = DateTimeFormatter.ofPattern(
+    /*val dateFormatter = DateTimeFormatter.ofPattern(
         "yyyy-MM-dd",
         Locale("ru")
     ).withZone(ZoneOffset.UTC)
@@ -107,7 +98,7 @@ fun updateLessonsSelections(
             }
         }
     }
-
+*/
     for (i in selectedLessons.indices) {
         val year = getYear(selectedLessons[i].startTime)
         val month = getMonth(selectedLessons[i].startTime)
