@@ -42,10 +42,6 @@
             android:name=".FeedActivity"
             android:exported="true"
             android:fitsSystemWindows="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".ProfileActivity"
@@ -66,10 +62,6 @@
             android:name=".ApplicationCreatorActivity"
             android:exported="true"
             android:fitsSystemWindows="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
         </activity>
     </application>
 </manifest>
